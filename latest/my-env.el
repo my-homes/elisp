@@ -959,9 +959,9 @@
   (delete-frame)
   )
 
-(defun json::encode ($x)
+(defun my-env::json::encode ($x)
   (json-encode $x))
-(defun json::parse ($x)
+(defun my-env::json::parse ($x)
   (json-parse-string
    $x
    :array-type 'list
