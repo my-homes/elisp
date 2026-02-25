@@ -13,4 +13,4 @@
 
 (setq api-id (api-load "MyApi"))
 (api-call api-id "echo" "ハロー©" "title タイトル")
-(echo (list 123 "abc") "リスト")
+(echo (list 123 "abc") "リストaaa")
