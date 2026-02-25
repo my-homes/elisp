@@ -1,0 +1,16 @@
+#! /usr/bin/env -S emacs -batch -l
+(load "~/.emacs.d/init.el")
+(require 'xprint)
+(log "hello ハロー©")
+(setq loop-count 5)
+(dotimes (i loop-count)
+  (xdump (1+ i))
+  )
+(setq misc-list '(11 22 abc "def ghi"))
+(dolist (x misc-list)
+  (xdump x)
+  )
+
+(setq api-id (api-load "MyApi"))
+(api-call api-id "echo" "ハロー©" "title タイトル")
+(echo (list 123 "abc") "リスト")
