@@ -1166,9 +1166,9 @@ app. The app is chosen from your OS's preference."
     "C-a" #'mark-whole-buffer
     "<delete>" #'my-env::*delete-region*
     "d" #'my-env::*delete-region*
-    "C-c" #'my-env::*copy-region*
+    "C-c" *ctrl-c-binding*
     "c" #'my-env::*copy-region*
-    "C-x" #'my-env::*kill-region*
+    "C-x" *ctrl-x-binding*
     "x" #'my-env::*kill-region*
     "C-v" #'my-env::*view-mode-yank*
     "v" #'my-env::*view-mode-yank*
@@ -1359,12 +1359,16 @@ app. The app is chosen from your OS's preference."
 ;; (bind-key* (kbd "C-v") #'yank)
 
 (my-env::global-bind-key (kbd "C-c")   *ctrl-c-binding*)
+;;(my-env::global-bind-key (kbd "C-c")   #'my-env::*copy-region*)
 ;; (global-set-key (kbd "C-c C-c") #'my-env::*copy-region*)
 (my-env::global-bind-key (kbd "C-x")   *ctrl-x-binding*)
+;;(my-env::global-bind-key (kbd "C-x")   #'my-env::*kill-region*)
 ;; (global-set-key (kbd "C-x C-x") #'my-env::*kill-region*)
 (my-env::global-bind-key (kbd "C-v")   'my-env::*yank*)
 (my-env::global-bind-key (kbd "C-f")   'isearch-forward)
 (my-env::global-bind-key (kbd "C-r")   'isearch-backward)
+(my-env::global-bind-key (kbd "C-s")   'save-buffer)
+(my-env::global-bind-key (kbd "C-w")   'write-file)
 
 (my-env::visual-bind-key (kbd "j") #'my-env::*down-key*)
 (my-env::visual-bind-key (kbd "C-n") #'next-line)
@@ -1399,7 +1403,7 @@ app. The app is chosen from your OS's preference."
 (global-set-key (kbd "<C-S-tab>" )   'my-env::*tab-next*)
 (global-set-key (kbd "<C-S-return>") 'my-env::*tab-next*)
 
-(global-set-key (kbd "C-x o")        'my-env::*other-window*)
+;;(global-set-key (kbd "C-x o")        'my-env::*other-window*)
 
 (global-set-key (kbd "<f3>")          'isearch-repeat-forward)
 (global-set-key (kbd "<S-f3>")        'isearch-repeat-backward)
@@ -1415,15 +1419,10 @@ app. The app is chosen from your OS's preference."
 (global-set-key (kbd "<f4>")         'my-env::*rotate-buffer*)
 (global-set-key (kbd "<C-f4>")       'my-env::*kill-current-buffer*)
 (global-set-key (kbd "<S-f4>")       'my-env::*kill-other-buffers*)
-(global-set-key (kbd "<M-f4>")
-                #'(lambda ()
-                    (interactive)
-                    (if (fboundp 'save-buffers-kill-terminal)
-                        (save-buffers-kill-terminal)
-                      (kill-emacs))))
+(global-set-key (kbd "<M-f4>")  #'kill-emacs)
 
 (global-set-key (kbd "<f5>")         'my-env::*bookmark-set*)
-(global-set-key (kbd "C-x <f5>")     'my-env::*bookmark-set*)
+;;(global-set-key (kbd "C-x <f5>")     'my-env::*bookmark-set*)
 (global-set-key (kbd "<C-f5>")       'my-env::*bookmark-set*)
 (global-set-key (kbd "<S-f5>")       'my-env::*bookmark-set*)
 (global-set-key (kbd "<M-f5>")       'my-env::*bookmark-set*)
@@ -1438,7 +1437,7 @@ app. The app is chosen from your OS's preference."
                     (eval-buffer) (message "Buffer evaluated.")))
 
 (global-set-key (kbd "<f6>")         'my-env::*list-bookmarks*)
-(global-set-key (kbd "C-x <f6>")     'my-env::*list-bookmarks*)
+;;(global-set-key (kbd "C-x <f6>")     'my-env::*list-bookmarks*)
 (global-set-key (kbd "<C-f6>")       'my-env::*list-bookmarks*)
 (global-set-key (kbd "<S-f6>")       'my-env::*list-bookmarks*)
 (global-set-key (kbd "<M-f6>")       'my-env::*list-bookmarks*)
@@ -1453,7 +1452,7 @@ app. The app is chosen from your OS's preference."
                     (tab-new) (my-env::*list-bookmarks*)))
 
 (global-set-key (kbd "<f7>")         'my-env::*list-files*)
-(global-set-key (kbd "C-x <f7>")     'my-env::*list-files*)
+;;(global-set-key (kbd "C-x <f7>")     'my-env::*list-files*)
 (global-set-key (kbd "<C-f7>")       'my-env::*list-files*)
 (global-set-key (kbd "<S-f7>")       'my-env::*list-files*)
 (global-set-key (kbd "<M-f7>")       'my-env::*list-files*)
@@ -1468,7 +1467,7 @@ app. The app is chosen from your OS's preference."
                     (tab-new) (my-env::*list-files*)))
 
 (global-set-key (kbd "<f8>")         'my-env::*list-buffers*)
-(global-set-key (kbd "C-x <f8>")     'my-env::*list-buffers*)
+;;(global-set-key (kbd "C-x <f8>")     'my-env::*list-buffers*)
 (global-set-key (kbd "<C-f8>")       'my-env::*list-buffers*)
 (global-set-key (kbd "<S-f8>")       'my-env::*list-buffers*)
 (global-set-key (kbd "<M-f8>")       'my-env::*list-buffers*)
@@ -1483,13 +1482,13 @@ app. The app is chosen from your OS's preference."
                     (tab-new) (my-env::*list-buffers*)))
 
 (global-set-key (kbd "<f9>")         'my-env::*toggle-mode*)
-(global-set-key (kbd "C-x <f9>")     'my-env::*toggle-mode*)
+;;(global-set-key (kbd "C-x <f9>")     'my-env::*toggle-mode*)
 (global-set-key (kbd "<C-f9>")       'my-env::*toggle-mode*)
 (global-set-key (kbd "<S-f9>")       'my-env::*toggle-mode*)
 (global-set-key (kbd "<M-f9>")       'my-env::*toggle-mode*)
 
 (global-set-key (kbd "<f10>")        'my-env::*run-file-in-eshell*)
-(global-set-key (kbd "C-x <f10>")    'my-env::*run-file-in-eshell*)
+;;(global-set-key (kbd "C-x <f10>")    'my-env::*run-file-in-eshell*)
 (global-set-key (kbd "<C-f10>")      'my-env::*run-file-in-eshell*)
 (global-set-key (kbd "<S-f10>")      'my-env::*run-file-in-eshell*)
 (global-set-key (kbd "<M-f10>")      'my-env::*run-file-in-eshell*)
@@ -1498,7 +1497,7 @@ app. The app is chosen from your OS's preference."
 (global-set-key (kbd "<C-M-f10>")    'my-env::*rerun-eshell*)
 
 (global-set-key (kbd "<f12>")        'my-env::*jump-to-function*)
-(global-set-key (kbd "C-x <f12>")    'my-env::*jump-to-function*)
+;;(global-set-key (kbd "C-x <f12>")    'my-env::*jump-to-function*)
 (global-set-key (kbd "<C-f12>")      'my-env::*jump-to-function*)
 (global-set-key (kbd "<S-f12>")      'my-env::*jump-to-function*)
 (global-set-key (kbd "<M-f12>")      'my-env::*jump-to-function*)
@@ -1551,9 +1550,9 @@ app. The app is chosen from your OS's preference."
 ;; (advice-add 'next-line :after #'my-env::*recenter*)
 
 ;; magit
-(define-key global-map (kbd "C-x g") 'magit-status)
-(define-key global-map (kbd "C-c g") 'magit-dispatch)
-(define-key global-map (kbd "C-c f") 'magit-file-dispatch)
+(define-key global-map (kbd "C-SPC C-x g") 'magit-status)
+(define-key global-map (kbd "C-SPC C-c g") 'magit-dispatch)
+(define-key global-map (kbd "C-SPC C-c f") 'magit-file-dispatch)
 
-(global-set-key (kbd "C-x C-c") #'kill-emacs)
+;;(global-set-key (kbd "C-x C-c") #'kill-emacs)
 (provide 'my-env)
