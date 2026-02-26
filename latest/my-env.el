@@ -1024,8 +1024,8 @@
 
 ;;; Internal Variables
 
-;; (defvar my-env::*mode-is-on* nil)
-(defvar my-env::*mode-is-on* t)
+(defvar my-env::*mode-is-on* nil)
+;;(defvar my-env::*mode-is-on* t)
 (make-variable-buffer-local 'my-env::*mode-is-on*)
 
 ;;; Functions
