@@ -31,13 +31,13 @@
 ;; [company]
 ;; (straight-use-package 'company)
 (require 'company)
-(global-company-mode) ; 全バッファで有効にする
+;;(global-company-mode) ; 全バッファで有効にする
 (setq company-idle-delay 0.5) ; デフォルトは0.5
 ;;(setq company-idle-delay 0) ; デフォルトは0.5
 (setq company-minimum-prefix-length 1) ; デフォルトは4
 (setq company-selection-wrap-around nil) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
-(add-hook 'emacs-lisp-mode-hook #'(lambda () (company-mode 1)))
-(add-hook 'lisp-interaction-mode-hook #'(lambda () (company-mode 1)))
+;;(add-hook 'emacs-lisp-mode-hook #'(lambda () (company-mode 1)))
+;;(add-hook 'lisp-interaction-mode-hook #'(lambda () (company-mode 1)))
 (add-hook 'racket-mode-hook #'(lambda () (company-mode 1)))
 (add-hook 'lisp-mode-hook #'(lambda () (company-mode 1)))
 
@@ -1182,8 +1182,8 @@ app. The app is chosen from your OS's preference."
     "s" #'save-buffer
     "C-w" #'write-file
     "w" #'write-file
-    "SPC" #'set-mark-command
-    "C-SPC" #'complete-symbol
+    "SPC" #'complete-symbol
+    "M-SPC" #'complete-symbol
     "m" #'set-mark-command
      "C-h" #'my-env::*query-replace*
     "h" #'my-env::*query-replace*
