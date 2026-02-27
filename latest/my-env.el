@@ -1341,8 +1341,8 @@ app. The app is chosen from your OS's preference."
 (my-env::global-bind-key (kbd "<C-up>")   'my-env::*up-key*)
 (my-env::global-bind-key (kbd "<C-down>") 'my-env::*down-key*)
 
-(my-env::visual-bind-key (kbd "<return>") #'my-env::*view-mode-return-key*)
-(my-env::visual-bind-key (kbd "C-i") #'my-env::*view-mode-tab-key*)
+;;(my-env::visual-bind-key (kbd "<return>") #'my-env::*view-mode-return-key*)
+;;(my-env::visual-bind-key (kbd "C-i") #'my-env::*view-mode-tab-key*)
 
 (my-env::visual-bind-key (kbd "SPC") #'set-mark-command)
 (my-env::visual-bind-key (kbd "<C-return>") #'my-env::*copy-region-or-yank*)
