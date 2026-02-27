@@ -9,7 +9,7 @@
 (require 'cl-lib)
 (require 'xprint)
 
-(my-pkg::install-packages
+''(my-pkg::install-packages
  '(
    evil
    company
@@ -22,6 +22,17 @@
    magit
    )
  )
+
+(use-package evil :ensure t)
+(use-package company :ensure t)
+(use-package general :ensure t)
+(use-package racket-mode :ensure t)
+(use-package dash :ensure t)
+(use-package dired-hacks-utils :ensure t)
+(use-package dired-filter :ensure t)
+(use-package dired-subtree :ensure t)
+(use-package magit :ensure t)
+
 (require 'dash)
 (require 'dired-hacks-utils)
 (require 'dired-filter)
@@ -1182,7 +1193,7 @@ app. The app is chosen from your OS's preference."
     "s" #'save-buffer
     "C-w" #'write-file
     "w" #'write-file
-    "SPC" #'complete-symbol
+    "SPC" #'just-one-space
     "M-SPC" #'complete-symbol
     "m" #'set-mark-command
      "C-h" #'my-env::*query-replace*
@@ -1547,9 +1558,9 @@ app. The app is chosen from your OS's preference."
 ;; (advice-add 'next-line :after #'my-env::*recenter*)
 
 ;; magit
-(define-key global-map (kbd "C-SPC C-x g") 'magit-status)
-(define-key global-map (kbd "C-SPC C-c g") 'magit-dispatch)
-(define-key global-map (kbd "C-SPC C-c f") 'magit-file-dispatch)
+;;(define-key global-map (kbd "C-SPC C-x g") 'magit-status)
+;;(define-key global-map (kbd "C-SPC C-c g") 'magit-dispatch)
+;;(define-key global-map (kbd "C-SPC C-c f") 'magit-file-dispatch)
 
 ;;(global-set-key (kbd "C-x C-c") #'kill-emacs)
 (provide 'my-env)

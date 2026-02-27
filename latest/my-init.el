@@ -12,7 +12,10 @@
 ;;(require 'names)
 (require 'my-env)
 
-(my-pkg::install-packages '(names s js2-mode))
+;;(my-pkg::install-packages '(names s js2-mode))
+(use-package names :ensure t)
+(use-package s :ensure t)
+(use-package js2-mode :ensure t)
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
