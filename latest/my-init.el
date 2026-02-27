@@ -12,13 +12,20 @@
 ;;(require 'names)
 (require 'my-env)
 
-(my-pkg::install-packages '(names s))
+(my-pkg::install-packages '(names s js2-mode))
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.mts\\'" . js2-mode))
+(add-hook 'js-mode-hook (function (lambda () (setq indent-tabs-mode nil tab-width 2 js-indent-level 2))))
+(setq js2-basic-offset 2) ;; For js2-mode
 
-  (add-to-list 'load-path (expand-file-name "~/emacs-ffi"))
+(add-to-list 'load-path (expand-file-name "~/emacs-ffi"))
 ;;  (require 'ffi)
-  (require 'json)
-  ;;(use-package s)
-  ;;(require 's)
+(require 'json)
+;;(use-package s)
+;;(require 's)
 
   (defun api::json::encode ($x)
     (json-encode $x))

@@ -1355,8 +1355,9 @@ app. The app is chosen from your OS's preference."
 (my-env::visual-bind-key (kbd "C-M-\\")       'my-env::*indent-region*)
 (my-env::visual-bind-key (kbd "<C-delete>")   'my-env::*delete-region*)
 
-(my-env::global-bind-key (kbd "C-M-v")   #'my-env::*view-mode-yank*)
-;; (bind-key* (kbd "C-v") #'yank)
+(my-env::global-bind-key (kbd "C-M-SPC")   #'set-mark-command)
+(my-env::global-bind-key (kbd "C-M-v") #'my-env::*view-mode-yank*)
+(my-env::global-bind-key (kbd "C-SPC") #'evil-emacs-state)
 
 (my-env::global-bind-key (kbd "C-c")   *ctrl-c-binding*)
 (my-env::global-bind-key (kbd "C-M-c")   #'my-env::*copy-region*)
@@ -1409,12 +1410,7 @@ app. The app is chosen from your OS's preference."
 (global-set-key (kbd "<S-f3>")        'isearch-repeat-backward)
 
 (global-set-key (kbd "<C-f3>")        'tab-close)
-(global-set-key (kbd "<M-f3>")
-                #'(lambda ()
-                    (interactive)
-                    (if (fboundp 'save-buffers-kill-terminal)
-                        (save-buffers-kill-terminal)
-                      (kill-emacs))))
+(global-set-key (kbd "<M-f3>") 'kill-emacs)
 
 (global-set-key (kbd "<f4>")         'my-env::*rotate-buffer*)
 (global-set-key (kbd "<C-f4>")       'my-env::*kill-current-buffer*)
@@ -1511,7 +1507,8 @@ app. The app is chosen from your OS's preference."
 (define-key archive-mode-map (kbd "j") #'archive-next-line)
 (define-key archive-mode-map (kbd "k") #'archive-previous-line)
 
-(my-env::global-bind-key (kbd "C-SPC") my-custom-map)
+;; (my-env::global-bind-key (kbd "C-SPC") my-custom-map)
+(my-env::global-bind-key (kbd "M-SPC") my-custom-map)
 ;;(my-env::global-bind-key (kbd "C-SPC") #'complete-symbol)
 (my-env::global-bind-key (kbd "C-h") #'my-env::*left-quick*)
 (my-env::global-bind-key (kbd "C-l") #'my-env::*right-quick*)
