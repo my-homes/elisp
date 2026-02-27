@@ -8,11 +8,8 @@
 ;; (straight-use-package '(@ :type git :host github :repo "skeeto/at-el"))
 ;; (require '@)
 
-;;(use-package names)
-;;(require 'names)
 (require 'my-env)
 
-;;(my-pkg::install-packages '(names s js2-mode))
 (use-package names :ensure t)
 (use-package s :ensure t)
 (use-package js2-mode :ensure t)

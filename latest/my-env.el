@@ -9,20 +9,6 @@
 (require 'cl-lib)
 (require 'xprint)
 
-''(my-pkg::install-packages
- '(
-   evil
-   company
-   general
-   racket-mode
-   dash
-   dired-hacks-utils
-   dired-filter
-   dired-subtree
-   magit
-   )
- )
-
 (use-package evil :ensure t)
 (use-package company :ensure t)
 (use-package general :ensure t)
@@ -1526,6 +1512,7 @@ app. The app is chosen from your OS's preference."
 (my-env::global-bind-key (kbd "<home>") #'beginning-of-line)
 (my-env::global-bind-key (kbd "<end>") #'end-of-line)
 (my-env::global-bind-key (kbd "<delete>") #'my-env::*delete-forward-char*)
+(my-env::global-bind-key (kbd "<C-S-SPC>")    'my-env::*lookup-file-or-function*)
 
 (define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)
 (define-key isearch-mode-map (kbd "<f3>") 'isearch-repeat-forward)

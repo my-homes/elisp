@@ -1,29 +1,6 @@
 (require 'package)
 (require 'xprint)
 
-(defun my-pkg::install-packages ($package-list)
-  (let* ( $need-install )
-    (dolist (package $package-list)
-      (xprint package)
-      (when (not (package-installed-p package))
-        (setq $need-install t)
-        )
-      )
-    (when $need-install
-      (add-to-list 'package-archives
-                   '("melpa" . "https://melpa.org/packages/"))
-      (package-initialize)
-      (package-refresh-contents)
-      (dolist (package $package-list)
-        (when (not (package-installed-p package))
-          (xmessage "Installing %s" package)
-          (package-install package)
-          )
-        )
-      )
-    )
-  )
-
 (require 'package)
 (setq package-archives
       '(
