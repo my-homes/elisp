@@ -1355,18 +1355,10 @@
          )
     (call-interactively #'evil-force-normal-state)
     (when region-active
-      (cond
-       ((eq evil-state 'visual)
-        (evil-emacs-state)
-        (set-mark m)
-        (goto-char (1- p))
-        (call-interactively #'evil-force-normal-state)
-        )
-       (t
-        (set-mark m)
-        (goto-char p)
-        )
-       )
+      (evil-emacs-state)
+      (set-mark m)
+      (goto-char (1- p))
+      (call-interactively #'evil-force-normal-state)
       )
     )
   )
