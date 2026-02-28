@@ -5,6 +5,34 @@
 
 ;; https://kazuhira-r.hatenablog.com/entry/2023/11/16/001403 Emacsでgitを使う（Magit）
 
+(setq visible-bell nil)
+
+;; (setq-default display-line-numbers-position 'right)
+;; (setq-default display-line-numbers 'visual)
+;; (setq-default display-line-numbers-width 4)
+;; (setq-default display-line-numbers-width-start t)
+;; (set-face-attribute 'line-number nil :foreground "DarkOliveGreen" :background "#131521")
+;; (set-face-attribute 'line-number-current-line nil :foreground "gold")
+;; (global-display-line-numbers-mode t)
+
+;; https://kei10in.hatenablog.jp/entry/20091104/1257341380
+(require 'linum)
+(setq linum-format
+      '(lambda (line)
+        (let ((fmt
+               (let ((min-w (if (display-graphic-p) 8 5))
+                     (w (length (number-to-string
+                                 (count-lines (point-min) (point-max))))))
+                 (concat "%"
+                         (number-to-string (if (< min-w w) w min-w))
+                         "d: "))))
+          (propertize (format fmt line) 'face 'linum))))
+(global-linum-mode)
+
+(global-auto-revert-mode 1)
+(require 'dired)
+(add-hook 'dired-mode-hook 'auto-revert-mode)
+
 (require 'my-pkg)
 (require 'cl-lib)
 (require 'xprint)
@@ -54,13 +82,6 @@
 
 (setq-default file-name-coding-system 'cp932)
 (setq-default truncate-lines t)
-
-(setq visible-bell nil)
-(global-display-line-numbers-mode t)
-(setq display-line-numbers-width-start t)
-(global-auto-revert-mode 1)
-(require 'dired)
-(add-hook 'dired-mode-hook 'auto-revert-mode)
 
 (require 'arc-mode)
 (add-to-list 'auto-mode-alist '("\\.nupkg\\'" . archive-mode))
@@ -1133,26 +1154,6 @@
               (define-key Buffer-menu-mode-map ( kbd "k") #'my-env::*up-key*)
               ))
 
-(defun mu-open-in-external-app ()
-  "Open the file where point is or the marked files in Dired in external
-app. The app is chosen from your OS's preference."
-  (interactive)
-  (let*
-      ((file-list
-        (dired-get-marked-files))
-       (cmd-file
-        (my-env::*media-list-m3u-text* file-list))
-       ;; (cmd (format "open-with-default-app.exe '%s' &" cmd-file))
-       (cmd (format "start '%s'" cmd-file))
-       )
-    (my-env::*run-command-in-eshell*
-     default-directory
-     cmd          )
-    )
-  )
-(define-key dired-mode-map ( kbd "C-S-<return>") #'mu-open-in-external-app)
-(define-key dired-mode-map ( kbd "C-<return>") #'my-env::*dired-open-marked*)
-
 (defvar my-custom-map
   (define-keymap
     "G" #'grep
@@ -1202,8 +1203,8 @@ app. The app is chosen from your OS's preference."
   "A custom keymap for specific functions.")
 
 (defun my-env::global-bind-key (key fun)
-  (global-unset-key key)
-  (bind-key* key fun)
+  ;;(global-unset-key key)
+  ;;(bind-key* key fun)
   (define-key global-map       key fun)
   (define-key view-mode-map       key fun)
   (evil-define-key 'normal 'global  key fun)
@@ -1353,7 +1354,6 @@ app. The app is chosen from your OS's preference."
     )
   )
 
-;;(bind-key* (kbd "<escape>") #'evil-force-normal-state)
 (my-env::global-bind-key (kbd "<escape>") #'my-env::*escape-key*)
 (defadvice archive-mode (after xxx2 activate)
   "xxx2"
@@ -1549,16 +1549,14 @@ app. The app is chosen from your OS's preference."
 (define-key isearch-mode-map (kbd "C-r") 'isearch-repeat-backward)
 (define-key isearch-mode-map (kbd "S-<f3>") 'isearch-repeat-backward)
 
-(bind-key* (kbd "C-o") #'my-env::*other-window*)
-(bind-key* (kbd "C-<return>") #'my-env::*copy-region-or-yank*)
-(bind-key* (kbd "C-S-<return>") #'set-mark-command)
-(bind-key* (kbd "C-o") #'my-env::*other-window*)
-(bind-key* (kbd "C-f") 'isearch-forward)
-(bind-key* (kbd "C-r") 'isearch-backward)
-(bind-key* (kbd "C-h") 'my-env::*left-quick*)
-(bind-key* (kbd "C-l") 'my-env::*right-quick*)
-;;(bind-key* (kbd "C-M-c") 'my-env::*comment-region*)
-;;(bind-key* (kbd "C-M-u") 'my-env::*uncomment-region*)
+(my-env::global-bind-key (kbd "C-o") #'my-env::*other-window*)
+(my-env::visual-bind-key (kbd "C-<return>") #'my-env::*copy-region-or-yank*)
+(my-env::global-bind-key (kbd "C-S-<return>") #'set-mark-command)
+(my-env::global-bind-key (kbd "C-o") #'my-env::*other-window*)
+(my-env::global-bind-key (kbd "C-f") 'isearch-forward)
+(my-env::global-bind-key (kbd "C-r") 'isearch-backward)
+(my-env::global-bind-key (kbd "C-h") 'my-env::*left-quick*)
+(my-env::global-bind-key (kbd "C-l") 'my-env::*right-quick*)
 
 (define-key view-mode-map (kbd "q") #'my-env::*kill-current-buffer*)
 (define-key messages-buffer-mode-map (kbd "q") #'my-env::*kill-current-buffer*)
@@ -1580,4 +1578,26 @@ app. The app is chosen from your OS's preference."
 ;;(define-key global-map (kbd "C-SPC C-c f") 'magit-file-dispatch)
 
 ;;(global-set-key (kbd "C-x C-c") #'kill-emacs)
+
+(defun mu-open-in-external-app ()
+  "Open the file where point is or the marked files in Dired in external
+app. The app is chosen from your OS's preference."
+  (interactive)
+  (let*
+      ((file-list
+        (dired-get-marked-files))
+       (cmd-file
+        (my-env::*media-list-m3u-text* file-list))
+       ;; (cmd (format "open-with-default-app.exe '%s' &" cmd-file))
+       (cmd (format "start '%s'" cmd-file))
+       )
+    (my-env::*run-command-in-eshell*
+     default-directory
+     cmd          )
+    )
+  )
+(define-key dired-mode-map ( kbd "C-S-<return>") #'mu-open-in-external-app)
+(define-key dired-mode-map ( kbd "C-<return>") #'my-env::*dired-open-marked*)
+(evil-set-initial-state 'dired-mode 'emacs)
+
 (provide 'my-env)
