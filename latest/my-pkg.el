@@ -14,4 +14,11 @@
 (unless (package-installed-p 'use-package)
     (package-install 'use-package))
 
+(require 'files)
+(let* ((elc-list (directory-files-recursively "~/.emacs.d/elpa/" ".+[.]elc")))
+  (unless elc-list
+    (package-recompile-all)
+    )
+  )
+
 (provide 'my-pkg)
