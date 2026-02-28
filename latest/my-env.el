@@ -47,6 +47,9 @@
 (use-package dired-subtree :ensure t)
 (use-package magit :ensure t)
 
+(modify-syntax-entry ?# "<" racket-mode-syntax-table)
+(modify-syntax-entry ?\n ">" racket-mode-syntax-table)
+
 (require 'dash)
 (require 'dired-hacks-utils)
 (require 'dired-filter)
@@ -305,6 +308,7 @@
   (cond
    ((eobp) (my-env::*ding*))
    ((my-env::*within-string* (point)) (my-env::*forward-within-string*))
+   ((looking-at "#|") (search-forward "|#" nil t))
    ((looking-at "\\s)") (my-env::*ding*))
    ((looking-at "\\s.")
     (forward-char))
@@ -312,6 +316,13 @@
     (let ((opoint (point)))
       (forward-line)
       (while (looking-at "\\s-*\\s<")
+        (setq opoint (point))
+        (forward-line))
+      (goto-char (max opoint (save-excursion (beginning-of-line) (point))))))
+   ((looking-at "#")
+    (let ((opoint (point)))
+      (forward-line)
+      (while (looking-at "#")
         (setq opoint (point))
         (forward-line))
       (goto-char (max opoint (save-excursion (beginning-of-line) (point))))))
@@ -330,6 +341,8 @@
     (cond
      ((bobp) (my-env::*ding*))
      ((my-env::*within-string* (point)) (my-env::*backward-within-string*))
+     ((looking-back "|#") (search-backward "#|" nil t))
+     ;; ((and (looking-back "|") (looking-at "#")) (search-backward "#|" nil t))
      ((looking-back "\\s(") (my-env::*ding*))
      ((looking-back "\\s.")
       (backward-char))
@@ -341,7 +354,11 @@
                   (save-excursion
                     (backward-char)
                     (setq comment-begin (my-env::*find-comment* (point)))))
-        (goto-char comment-begin)))
+        (goto-char comment-begin))
+      (when (and (looking-back "|") (looking-at "#"))
+        (forward-char)
+        )
+      )
      ((looking-back "\\s-") (while (looking-back "\\s-") (backward-char)))
      ((looking-back "\\s<") (while (looking-back "\\s<") (backward-char)))
      ((looking-back "\n")
@@ -1008,7 +1025,7 @@
 
 ;;; Customization
 
-(defvar my-env::ding-dings t)
+(defvar my-env::ding-dings nil)
 
 (setq bookmark-bmenu-file-column 45)
 
@@ -1042,8 +1059,8 @@
 
 ;;; Internal Variables
 
-(defvar my-env::*mode-is-on* nil)
-;;(defvar my-env::*mode-is-on* t)
+;;(defvar my-env::*mode-is-on* nil)
+(defvar my-env::*mode-is-on* t)
 (make-variable-buffer-local 'my-env::*mode-is-on*)
 
 ;;; Functions
