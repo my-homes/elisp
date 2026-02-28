@@ -33,8 +33,8 @@
 ;;(setq company-idle-delay 0) ; デフォルトは0.5
 (setq company-minimum-prefix-length 1) ; デフォルトは4
 (setq company-selection-wrap-around nil) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
-;;(add-hook 'emacs-lisp-mode-hook #'(lambda () (company-mode 1)))
-;;(add-hook 'lisp-interaction-mode-hook #'(lambda () (company-mode 1)))
+(add-hook 'emacs-lisp-mode-hook #'(lambda () (company-mode 1)))
+(add-hook 'lisp-interaction-mode-hook #'(lambda () (company-mode 1)))
 (add-hook 'racket-mode-hook #'(lambda () (company-mode 1)))
 (add-hook 'lisp-mode-hook #'(lambda () (company-mode 1)))
 
@@ -1312,19 +1312,49 @@ app. The app is chosen from your OS's preference."
 (my-env::global-bind-key (kbd "C-z") #'my-env::*view-mode-undo*)
 (my-env::global-bind-key (kbd "C-y") #'my-env::*view-mode-redo*)
 
-;;(bind-key* (kbd "C-@") #'evil-force-normal-state)
-;;(my-env::visual-bind-key (kbd "C-@") #'evil-emacs-state)
-(evil-define-key 'normal 'global (kbd "C-@") #'evil-emacs-state)
-(evil-define-key 'visual 'global (kbd "C-@") #'evil-emacs-state)
-(evil-define-key 'emacs 'global (kbd "C-@") #'evil-force-normal-state)
+;; (evil-define-key 'normal 'global (kbd "C-@") #'evil-emacs-state)
+;; (evil-define-key 'visual 'global (kbd "C-@") #'evil-emacs-state)
+;; (evil-define-key 'emacs 'global (kbd "C-@") #'evil-force-normal-state)
+
+(evil-define-key 'normal 'global (kbd "C-]") #'evil-emacs-state)
+(evil-define-key 'visual 'global (kbd "C-]") #'evil-emacs-state)
+(evil-define-key 'emacs 'global (kbd "C-]") #'evil-force-normal-state)
 
 ;;(my-env::global-bind-key (kbd "<tab>") #'my-env::*view-mode-tab-key*)
 (my-env::global-bind-key (kbd "C-i") #'my-env::*view-mode-tab-key*)
 
 (my-env::visual-bind-key (kbd "\\") #'my-env::*indent-region*)
+(my-env::visual-bind-key (kbd "C") #'my-env::*comment-region*)
+(my-env::visual-bind-key (kbd "U") #'my-env::*uncomment-region*)
 
-(bind-key* (kbd "<escape>") #'evil-force-normal-state)
-;;(bind-key* (kbd "<escape>") #'(lambda () (interactive) (view-mode-enter t)))
+(defun my-env::*escape-key* ()
+  (interactive)
+  (let* (
+         (orig-evil-state evil-state)
+         (region-active (region-active-p))
+         (m (mark))
+         (p (point))
+         )
+    (call-interactively #'evil-force-normal-state)
+    (when region-active
+      (cond
+       ((eq evil-state 'visual)
+        (evil-emacs-state)
+        (set-mark m)
+        (goto-char (1- p))
+        (call-interactively #'evil-force-normal-state)
+        )
+       (t
+        (set-mark m)
+        (goto-char p)
+        )
+       )
+      )
+    )
+  )
+
+;;(bind-key* (kbd "<escape>") #'evil-force-normal-state)
+(my-env::global-bind-key (kbd "<escape>") #'my-env::*escape-key*)
 (defadvice archive-mode (after xxx2 activate)
   "xxx2"
   (view-mode-exit t)
@@ -1365,8 +1395,8 @@ app. The app is chosen from your OS's preference."
 (my-env::global-bind-key (kbd "C-v")   'my-env::*yank*)
 (my-env::global-bind-key (kbd "C-f")   'isearch-forward)
 (my-env::global-bind-key (kbd "C-r")   'isearch-backward)
-(my-env::global-bind-key (kbd "C-s")   'save-buffer)
-(my-env::global-bind-key (kbd "C-w")   'write-file)
+;;(my-env::global-bind-key (kbd "C-s")   'save-buffer)
+;;(my-env::global-bind-key (kbd "C-w")   'write-file)
 
 (my-env::visual-bind-key (kbd "j") #'my-env::*down-key*)
 (my-env::visual-bind-key (kbd "C-n") #'next-line)
