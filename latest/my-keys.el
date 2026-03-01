@@ -68,14 +68,6 @@
 (my-env::global-bind-key (kbd "C-z") #'my-env::*view-mode-undo*)
 (my-env::global-bind-key (kbd "C-y") #'my-env::*view-mode-redo*)
 
-;; (evil-define-key 'normal 'global (kbd "C-@") #'evil-emacs-state)
-;; (evil-define-key 'visual 'global (kbd "C-@") #'evil-emacs-state)
-;; (evil-define-key 'emacs 'global (kbd "C-@") #'evil-force-normal-state)
-
-(evil-define-key 'normal 'global (kbd "C-]") #'evil-emacs-state)
-(evil-define-key 'visual 'global (kbd "C-]") #'evil-emacs-state)
-(evil-define-key 'emacs 'global (kbd "C-]") #'evil-force-normal-state)
-
 ;;(my-env::global-bind-key (kbd "<tab>") #'my-env::*view-mode-tab-key*)
 (my-env::global-bind-key (kbd "C-i") #'my-env::*view-mode-tab-key*)
 
@@ -85,8 +77,6 @@
 
 (my-env::global-bind-key (kbd "<escape>") #'my-env::*escape-key*)
 
-(evil-define-key 'emacs 'global (kbd "<escape>") #'evil-force-normal-state)
-
 (my-env::visual-bind-key (kbd "q") #'my-env::*kill-current-buffer*)
 
 (my-env::global-bind-key (kbd "<C-right>")'my-env::*right-key*)
@@ -94,8 +84,8 @@
 (my-env::global-bind-key (kbd "<C-up>")   'my-env::*up-key*)
 (my-env::global-bind-key (kbd "<C-down>") 'my-env::*down-key*)
 
-;;(my-env::visual-bind-key (kbd "<return>") #'my-env::*view-mode-return-key*)
-;;(my-env::visual-bind-key (kbd "C-i") #'my-env::*view-mode-tab-key*)
+(my-env::visual-bind-key (kbd "<return>") #'my-env::*view-mode-return-key*)
+(my-env::visual-bind-key (kbd "C-i") #'my-env::*view-mode-tab-key*)
 
 (my-env::visual-bind-key (kbd "SPC") #'set-mark-command)
 (my-env::visual-bind-key (kbd "<C-return>") #'my-env::*copy-region-or-yank*)
@@ -106,7 +96,7 @@
 (my-env::visual-bind-key (kbd "<C-delete>")   'my-env::*delete-region*)
 
 (my-env::global-bind-key (kbd "C-M-v") #'my-env::*view-mode-yank*)
-(my-env::global-bind-key (kbd "C-SPC") #'evil-emacs-state)
+(my-env::global-bind-key (kbd "C-SPC") my-custom-map)
 
 (my-env::global-bind-key (kbd "C-c")   *ctrl-c-binding*)
 (my-env::global-bind-key (kbd "C-M-c")   #'my-env::*copy-region*)
@@ -293,14 +283,11 @@
 
 (define-key dired-mode-map ( kbd "C-S-<return>") #'mu-open-in-external-app)
 (define-key dired-mode-map ( kbd "C-<return>") #'my-env::*dired-open-marked*)
-(evil-set-initial-state 'dired-mode 'emacs)
 
-;;(my-env::global-bind-key (kbd "C-M-SPC")   #'set-mark-command)
 (my-env::global-bind-key (kbd "C-M-SPC") my-custom-map)
 
 (defun my-env::toggle-input-method ()
   (interactive)
-  (evil-emacs-state)
   (call-interactively #'toggle-input-method)
   )
 (my-env::global-bind-key (kbd "C-\\") #'my-env::toggle-input-method)
@@ -309,14 +296,10 @@
 
 (my-env::global-bind-key (kbd "<convert>") #'find-file)
 
-;;(require 'mule-cmds)
 (my-env::global-bind-key (kbd "C-<enlw>") #'my-env::toggle-input-method)
 (my-env::global-bind-key (kbd "C-<auto>") #'my-env::toggle-input-method)
 
-;;(modify-syntax-entry ?\; "<" emacs-lisp-mode-syntax-table)
-;;(modify-syntax-entry ?\n ">" emacs-lisp-mode-syntax-table)
-
-
-
+(my-env::global-bind-key (kbd "C-]") #'(lambda () (interactive) (describe-key (kbd "<return>"))))
+(my-env::visual-bind-key (kbd "SPC") #'my-env::*view-mode-space-key*)
 
 (provide 'my-keys)

@@ -33,7 +33,6 @@
 (require 'cl-lib)
 (require 'xprint)
 
-(use-package evil :ensure t)
 (use-package company :ensure t)
 (use-package general :ensure t)
 (use-package racket-mode :ensure t)
@@ -66,13 +65,6 @@
 (add-hook 'racket-mode-hook #'(lambda () (company-mode 1)))
 (add-hook 'lisp-mode-hook #'(lambda () (company-mode 1)))
 
-;; Enable Evil
-(require 'evil)
-;;(evil-mode 1)
-
-;;(setq evil-mode nil)
-;;(setq evil-state nil)
-
 (setq scroll-step 1)
 ;; (setq scroll-conservatively 101)
 
@@ -93,20 +85,6 @@
 (require 'view)
 (require 'json)
 
-(use-package general :ensure t)
-(require 'general)
-(general-evil-setup)
-
-(setq evil-move-beyond-eol t) ;; Move to the absolute end (including newline)
-(setq evil-move-cursor-back nil) ;; Prevent cursor moving back when exiting Insert mode
-(setq  evil-repeat-move-cursor nil) ;; https://evil.readthedocs.io/en/latest/settings.html#cursor-movement
-(defvar my-env::*use-evil* nil)
-(when my-env::*use-evil*
-  ;;(evil-mode 1)
-  )
-
-;; (general-nvmap "" #')
-
 ;;(require 'names)
 
 ;;(eval-when-compile (require 'names))
@@ -114,21 +92,6 @@
 ;;(define-namespace my-env::
 
 (setq my-env::version "v3.6.1")
-
-(defun my-env::*visual-mode-adjust* ()
-  (interactive)
-  (let* (
-         (orig-evil-state evil-state)
-         (m (mark))
-         (p (point))
-         )
-    (when (eq evil-state 'visual)
-      (evil-emacs-state)
-      (set-mark m)
-      (goto-char (1- p))
-      )
-   )
-  )
 
 (defun my-env::*query-replace* ()
   (interactive)
@@ -147,7 +110,6 @@
 (defun my-env::*view-mode-tab-key* ()
   (interactive)
   (view-mode-exit t)
-  (evil-emacs-state)
   (call-interactively 'indent-for-tab-command)
   )
 
@@ -155,33 +117,21 @@
   (interactive)
   (view-mode-exit t)
   (call-interactively 'undo)
-  (if (not evil-mode)
-      (view-mode-enter t)
-    (view-mode-exit t)
-    (evil-normal-state)
-    )
+  (view-mode-enter t)
   )
 
 (defun my-env::*view-mode-redo* ()
   (interactive)
   (view-mode-exit t)
   (call-interactively 'undo-redo)
-  (if (not evil-mode)
-      (view-mode-enter t)
-    (view-mode-exit t)
-    (evil-normal-state)
-    )
+  (view-mode-enter t)
   )
 
 (defun my-env::*view-mode-yank* ()
   (interactive)
   (view-mode-exit t)
   (call-interactively 'yank)
-  (if evil-mode
-      (evil-normal-state)
-    (view-mode-enter t)
-    )
-  ;;(message "*view-mode-yank*")
+  (view-mode-enter t)
   )
 
 (defun my-env::*mode* ()
@@ -235,13 +185,11 @@
 
 (defun my-env::*right-quick* ()
   (interactive)
-  (my-env::*visual-mode-adjust*)
   (my-env::*forward-sexp*)
   (my-env::*recenter*))
 
 (defun my-env::*left-quick* ()
   (interactive)
-  (my-env::*visual-mode-adjust*)
   (my-env::*backward-sexp*)
   (my-env::*recenter*))
 
@@ -426,34 +374,12 @@
    (t (recenter -1)))
   )
 
-;; (defun my-env::*operate-on-region-or-sexp* (op)
-;;   (interactive)
-;;   (let* (
-;;          (orig-evil-state evil-state)
-;;          (m (mark))
-;;          (p (point))
-;;          )
-;;     (when (eq evil-state 'visual)
-;;       (evil-emacs-state)
-;;       (set-mark m)
-;;       (goto-char (1- p))
-;;       )
-;;     (view-mode-exit t)
-;;     (if (region-active-p)
-;;         (funcall op (mark) (point))
-;;       (funcall op
-;;                (point)
-;;                (progn (my-env::*forward-sexp*) (point))
-;;                )
-;;       )
-;;     (unless (eq orig-evil-state 'emacs)
-;;       (evil-change-state 'normal)
-;;       )
-;;     )
-;;   )
-
 (defun my-env::*operate-on-region-or-sexp* (op)
   (interactive)
+  (let* (($is-view-mode view-mode))
+    (when $is-view-mode
+      (view-mode-exit t)
+      )
     (if (region-active-p)
         (funcall op (mark) (point))
       (funcall op
@@ -461,6 +387,10 @@
                (progn (my-env::*forward-sexp*) (point))
                )
       )
+    (when $is-view-mode
+      (view-mode-enter t)
+      )
+    )
   )
 
 (defun my-env::*delete-forward-char* ()
@@ -952,39 +882,33 @@
   (set-buffer-file-coding-system 'utf-8-unix)
   (delete-trailing-whitespace)
   (when (eq (key-binding ( kbd "SPC")) 'self-insert-command)
-    (call-interactively #'evil-force-normal-state)
-    (unless evil-mode (view-mode-enter t))
+    (view-mode-enter t)
     )
   )
 
-(defun my-env::*yank* ()
+''(defun my-env::*yank* ()
   (interactive)
   (view-mode-exit t)
   (call-interactively #'yank)
-  (evil-emacs-state)
   )
 
-(defun my-env::*space-key* ()
+(defun my-env::*view-mode-space-key* ()
   (interactive)
-  (insert " ")
-  (evil-emacs-state)
+  (view-mode-exit t)
+  ;;(self-insert-command 1 ?\ )
+  (call-interactively #'self-insert-command)
+  (setq this-command #'self-insert-command)
   )
 
 (defun my-env::*view-mode-return-key* ()
   (interactive)
   (view-mode-exit t)
   (call-interactively 'newline)
-  (if (not evil-mode)
-      (view-mode-enter t)
-    (view-mode-exit t)
-    (evil-emacs-state)
-    )
   )
 
-(defun tab-key ()
+''(defun tab-key ()
   (interactive)
   (call-interactively 'indent-for-tab-command)
-  (evil-emacs-state)
   )
 
 (defun my-env::*quit* ()
@@ -1010,15 +934,9 @@
 (defun my-env::*quit-buffer* ()
   (interactive)
   (delete-other-windows)
-  ;; (ignore-errors
-  ;;   (kill-buffer "*eshell*")
-  ;;   )
-  ;; (ignore-errors
-  ;;   (kill-buffer "*scratch*")
-  ;;   )
   (my-env::*kill-current-buffer*)
   (unless (eq major-mode 'dired-mode)
-    (unless evil-mode (view-mode-enter t))
+    (view-mode-enter t)
     )
   )
 
@@ -1157,7 +1075,6 @@
 (add-hook 'Buffer-menu-mode-hook
           #'(lambda ()
               (view-mode-exit t)
-              (call-interactively #'evil-emacs-state)
               (define-key Buffer-menu-mode-map ( kbd "q") #'my-env::*kill-current-buffer*)
               (define-key Buffer-menu-mode-map ( kbd "j") #'my-env::*down-key*)
               (define-key Buffer-menu-mode-map ( kbd "k") #'my-env::*up-key*)
@@ -1166,16 +1083,10 @@
 (defun my-env::global-bind-key (key fun)
   (define-key global-map       key fun)
   (define-key view-mode-map       key fun)
-  (evil-define-key 'normal 'global  key fun)
-  (evil-define-key 'emacs 'global  key fun)
-  (evil-define-key 'visual' global    key fun)
-  (evil-define-key 'insert 'global    key fun)
   )
 
 (defun my-env::visual-bind-key (key fun)
   (define-key view-mode-map       key fun)
-  (evil-define-key 'normal 'global  key fun)
-  (evil-define-key 'visual 'global    key fun)
   )
 
 (defun my-env::*setup-key-bindings* ()
@@ -1192,8 +1103,7 @@
 
 (defadvice archive-extract (after xxx activate)
   "xxxr"
-  (unless evil-mode (view-mode-enter t))
-  (my-env::*setup-key-bindings*)
+  (view-mode-enter t)
   )
 
 ;; https://stackoverflow.com/questions/5154309/how-to-make-a-opened-buffer-read-only-without-reloading-again-with-find-file-re
@@ -1205,15 +1115,8 @@
                          (file-exists-p (buffer-file-name))
                          (file-writable-p (buffer-file-name)))
                 (message "View mode enabled in current buffer")
-                (if (not evil-mode)
-                    (view-mode-enter t)
-                  (view-mode-exit t)
-                  (evil-force-normal-state)
-                  )
+                (view-mode-enter t)
                 )
-              ;;(view-mode-exit t)
-              ;; (viper-mode)
-              (my-env::*setup-key-bindings*)
               (delete-other-windows)
               ))
 
@@ -1225,61 +1128,26 @@
                          (file-exists-p (buffer-file-name))
                          (file-writable-p (buffer-file-name)))
                 (message "View mode enabled in current buffer")
-                (if (not evil-mode)
-                    (view-mode-enter t)
-                  (view-mode-exit t)
-                  (evil-force-normal-state)
-                  )
+                (view-mode-enter t)
                 )
-              (my-env::*setup-key-bindings*)
               (delete-other-windows)
               ))
 
 (add-hook 'dired-mode-hook
           #'(lambda ()
               (view-mode-exit t)
-              (evil-emacs-state)
-              ;; (viper-mode)
-              (my-env::*setup-key-bindings*)
               (delete-other-windows)
-              (call-interactively #'evil-emacs-state)
               ))
 
 (add-hook 'tar-mode-hook
           #'(lambda ()
               (view-mode-exit t)
-              ;; (my-env::*setup-key-bindings*)
               (delete-other-windows)
-              (call-interactively #'evil-emacs-state)
-              ))
-
-(add-hook 'lisp-interaction-mode-hook
-          #'(lambda ()
-              (run-with-timer 0.05 nil
-                              #'(lambda ()
-                                 (my-env::*setup-key-bindings*)
-                                  (if evil-mode
-                                      (evil-emacs-state)
-                                    )
-                                  ))
               ))
 
 (defun my-env::*escape-key* ()
   (interactive)
-  (let* (
-         (orig-evil-state evil-state)
-         (region-active (region-active-p))
-         (m (mark))
-         (p (point))
-         )
-    (call-interactively #'evil-force-normal-state)
-    (when region-active
-      (evil-emacs-state)
-      (set-mark m)
-      (goto-char (1- p))
-      (call-interactively #'evil-force-normal-state)
-      )
-    )
+  (view-mode-enter t)
   )
 
 (defadvice archive-mode (after xxx2 activate)
@@ -1306,6 +1174,8 @@ app. The app is chosen from your OS's preference."
      cmd          )
     )
   )
+
+;;(add-hook 'minibuffer-setup-hook 'your-custom-function)
 
 (require 'my-keys)
 
