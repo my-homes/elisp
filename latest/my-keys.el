@@ -261,7 +261,8 @@
 (define-key isearch-mode-map (kbd "S-<f3>") 'isearch-repeat-backward)
 
 (my-env::global-bind-key (kbd "C-o") #'my-env::*other-window*)
-(my-env::visual-bind-key (kbd "C-<return>") #'my-env::*copy-region-or-yank*)
+;;(my-env::visual-bind-key (kbd "C-<return>") #'my-env::*copy-region-or-yank*)
+(my-env::global-bind-key (kbd "C-<return>") #'my-env::*copy-region-or-yank*)
 (my-env::global-bind-key (kbd "C-S-<return>") #'set-mark-command)
 (my-env::global-bind-key (kbd "C-o") #'my-env::*other-window*)
 (my-env::global-bind-key (kbd "C-f") 'isearch-forward)
