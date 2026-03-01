@@ -299,6 +299,22 @@
 
 (my-env::global-bind-key (kbd "C-<enlw>") #'toggle-input-method)
 (my-env::global-bind-key (kbd "C-<auto>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-add>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-subtract>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-multiply>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-divide>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-enter>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-0>") #'my-env::*toggle-mode*)
+(my-env::global-bind-key (kbd "<kp-1>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-2>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-3>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-4>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-5>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-6>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-7>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-8>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-9>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "<kp-decimal>") #'toggle-input-method)
 
 (my-env::visual-bind-key (kbd "SPC") #'my-env::*view-mode-space-key*)
 
