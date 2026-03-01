@@ -132,4 +132,15 @@ app. The app is chosen from your OS's preference."
   ;; (require 'example)
   )
 
+;;(add-to-list 'load-path (expand-file-name "~/ejacs"))
+;;(autoload 'js-console "js-console" nil t)
+
+;;(use-package xwwp :ensure t)
+
+(add-to-list 'load-path "~/emacs-websocket/")
+(require 'websocket)
+
+(add-to-list 'load-path "~/deno-bridge/")
+(require 'deno-bridge)
+
 (provide 'my-init)
