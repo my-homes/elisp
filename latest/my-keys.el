@@ -30,7 +30,7 @@
     "C-w" #'write-file
     "w" #'write-file
     "SPC" #'just-one-space
-    "M-SPC" #'complete-symbol
+    "C-SPC" #'complete-symbol
     "m" #'set-mark-command
      "C-h" #'my-env::*query-replace*
     "h" #'my-env::*query-replace*

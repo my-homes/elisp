@@ -1185,4 +1185,18 @@ app. The app is chosen from your OS's preference."
 
 (require 'my-keys)
 
+;;(use-package markdown-mode :ensure t)
+(unless (package-installed-p 'markdown-mode)
+  (package-install 'markdown-mode))
+
+;;(require 'markdown-mode)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+;; Optional: Use gfm-mode for GitHub Flavored Markdown (GFM)
+(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+
+;;markdown-preview-mode
+;;(unless (package-installed-p 'markdown-preview-mode)
+;;  (package-install 'markdown-preview-mode))
+
 (provide 'my-env)
