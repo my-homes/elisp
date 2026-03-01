@@ -52,7 +52,6 @@
 (my-env::visual-bind-key (kbd "C-M-\\")       'my-env::*indent-region*)
 (my-env::visual-bind-key (kbd "<C-delete>")   'my-env::*delete-region*)
 
-(my-env::global-bind-key (kbd "C-M-SPC")   #'set-mark-command)
 (my-env::global-bind-key (kbd "C-M-v") #'my-env::*view-mode-yank*)
 (my-env::global-bind-key (kbd "C-SPC") #'evil-emacs-state)
 
@@ -205,7 +204,6 @@
 (define-key archive-mode-map (kbd "k") #'archive-previous-line)
 
 ;; (my-env::global-bind-key (kbd "C-SPC") my-custom-map)
-(my-env::global-bind-key (kbd "M-SPC") my-custom-map)
 ;;(my-env::global-bind-key (kbd "C-SPC") #'complete-symbol)
 (my-env::global-bind-key (kbd "C-h") #'my-env::*left-quick*)
 (my-env::global-bind-key (kbd "C-l") #'my-env::*right-quick*)
@@ -243,5 +241,8 @@
 (define-key dired-mode-map ( kbd "C-S-<return>") #'mu-open-in-external-app)
 (define-key dired-mode-map ( kbd "C-<return>") #'my-env::*dired-open-marked*)
 (evil-set-initial-state 'dired-mode 'emacs)
+
+;;(my-env::global-bind-key (kbd "C-M-SPC")   #'set-mark-command)
+(my-env::global-bind-key (kbd "C-M-SPC") my-custom-map)
 
 (provide 'my-keys)
