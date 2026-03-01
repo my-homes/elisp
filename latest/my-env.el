@@ -1121,7 +1121,9 @@
                          (file-exists-p (buffer-file-name))
                          (file-writable-p (buffer-file-name)))
                 (message "View mode enabled in current buffer")
-                (view-mode-enter t)
+                (unless (or (string-suffix-p ".md" (buffer-file-name)) (string-suffix-p ".markdown" (buffer-file-name)))
+                  (view-mode-enter t)
+                  )
                 )
               (delete-other-windows)
               ))
@@ -1195,8 +1197,19 @@ app. The app is chosen from your OS's preference."
 ;; Optional: Use gfm-mode for GitHub Flavored Markdown (GFM)
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
 
-;;markdown-preview-mode
-;;(unless (package-installed-p 'markdown-preview-mode)
-;;  (package-install 'markdown-preview-mode))
+(unless (package-installed-p 'yasnippet-snippets)
+  (package-install 'yasnippet-snippets))
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"                 ;; personal snippets
+        ;;"/path/to/some/collection/"           ;; foo-mode and bar-mode snippet collection
+        ;;"/path/to/yasnippet/yasmate/snippets" ;; the yasmate collection
+        ))
+(yas-global-mode 1)
+
+(add-hook 'markdown-mode
+          #'(lambda ()
+              (view-mode-exit 1)
+              )
+          )
 
 (provide 'my-env)

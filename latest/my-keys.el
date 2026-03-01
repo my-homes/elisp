@@ -303,7 +303,6 @@
 (my-env::global-bind-key (kbd "<kp-subtract>") #'toggle-input-method)
 (my-env::global-bind-key (kbd "<kp-multiply>") #'toggle-input-method)
 (my-env::global-bind-key (kbd "<kp-divide>") #'toggle-input-method)
-(my-env::global-bind-key (kbd "<kp-enter>") #'toggle-input-method)
 (my-env::global-bind-key (kbd "<kp-0>") #'my-env::*toggle-mode*)
 (my-env::global-bind-key (kbd "<kp-1>") #'toggle-input-method)
 (my-env::global-bind-key (kbd "<kp-2>") #'toggle-input-method)
@@ -317,5 +316,11 @@
 (my-env::global-bind-key (kbd "<kp-decimal>") #'toggle-input-method)
 
 (my-env::visual-bind-key (kbd "SPC") #'my-env::*view-mode-space-key*)
+(my-env::global-bind-key (kbd "<kp-enter>")
+                         #'(lambda ()
+                             (interactive)
+                             (view-mode-exit 1)
+                             (ding)
+                             (message "[!! YOU CAN EDIT NOW !!]")))
 
 (provide 'my-keys)
