@@ -9,7 +9,7 @@ async function messageDispatcher(message: string) {
       console.log("Emacs message: ", funcArgs);
       const emacsVar = await bridge.getEmacsVar("deno-bridge-app-list");
       console.log("Emacs var 'deno-bridge-app-list': ", emacsVar);
-      bridge.messageToEmacs("Hi from TypeScript");
-      bridge.evalInEmacs('(message \"Eval from TypeScript\")');
+      bridge.messageToEmacs("Hi from TypeScript ハロー©2");
+      bridge.evalInEmacs('(message \"Eval from TypeScript ハロー©2\")');
     }
 }
