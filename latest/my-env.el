@@ -248,6 +248,8 @@
   (cond
    ((eobp) (my-env::*ding*))
    ((my-env::*within-string* (point)) (my-env::*forward-within-string*))
+   ;;((looking-at "#'" (forward-sexp)))
+   ((looking-at "#|") (search-forward "|#" nil t))
    ((looking-at "(") (forward-sexp))
    ((looking-at "\n")
     (let ((bol? (bolp)))
@@ -262,8 +264,6 @@
         (setq opoint (point))
         (forward-line))
       (goto-char (max opoint (save-excursion (beginning-of-line) (point))))))
-   ((looking-at "#'" (forward-sexp)))
-   ((looking-at "#|") (search-forward "|#" nil t))
    ((looking-at "\\s)") (my-env::*ding*))
    ((looking-at "\\s.")
     (forward-char))
