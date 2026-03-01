@@ -1,0 +1,247 @@
+(require 'sh-script)
+(define-key sh-mode-map ( kbd "C-c") *ctrl-c-binding*)
+
+(define-key dired-mode-map ( kbd "C-,")
+            'dired-subtree-toggle)
+(define-key dired-mode-map ( kbd "C-i")
+            'dired-subtree-only-this-file)
+
+(define-key dired-mode-map ( kbd "C-.") #'toggle-dired-listing-switches)
+
+(my-env::global-bind-key (kbd "C-<f1>") 'my-env::*quit*)
+(my-env::global-bind-key (kbd "<next>") 'my-env::*down-quick*)
+(my-env::global-bind-key (kbd "<prior>") 'my-env::*up-quick*)
+
+(my-env::global-bind-key (kbd "C-z") #'my-env::*view-mode-undo*)
+(my-env::global-bind-key (kbd "C-y") #'my-env::*view-mode-redo*)
+
+;; (evil-define-key 'normal 'global (kbd "C-@") #'evil-emacs-state)
+;; (evil-define-key 'visual 'global (kbd "C-@") #'evil-emacs-state)
+;; (evil-define-key 'emacs 'global (kbd "C-@") #'evil-force-normal-state)
+
+(evil-define-key 'normal 'global (kbd "C-]") #'evil-emacs-state)
+(evil-define-key 'visual 'global (kbd "C-]") #'evil-emacs-state)
+(evil-define-key 'emacs 'global (kbd "C-]") #'evil-force-normal-state)
+
+;;(my-env::global-bind-key (kbd "<tab>") #'my-env::*view-mode-tab-key*)
+(my-env::global-bind-key (kbd "C-i") #'my-env::*view-mode-tab-key*)
+
+(my-env::visual-bind-key (kbd "\\") #'my-env::*indent-region*)
+(my-env::visual-bind-key (kbd "C") #'my-env::*comment-region*)
+(my-env::visual-bind-key (kbd "U") #'my-env::*uncomment-region*)
+
+(my-env::global-bind-key (kbd "<escape>") #'my-env::*escape-key*)
+
+(evil-define-key 'emacs 'global (kbd "<escape>") #'evil-force-normal-state)
+
+(my-env::visual-bind-key (kbd "q") #'my-env::*kill-current-buffer*)
+
+(my-env::global-bind-key (kbd "<C-right>")'my-env::*right-key*)
+(my-env::global-bind-key (kbd "<C-left>") 'my-env::*left-key*)
+(my-env::global-bind-key (kbd "<C-up>")   'my-env::*up-key*)
+(my-env::global-bind-key (kbd "<C-down>") 'my-env::*down-key*)
+
+;;(my-env::visual-bind-key (kbd "<return>") #'my-env::*view-mode-return-key*)
+;;(my-env::visual-bind-key (kbd "C-i") #'my-env::*view-mode-tab-key*)
+
+(my-env::visual-bind-key (kbd "SPC") #'set-mark-command)
+(my-env::visual-bind-key (kbd "<C-return>") #'my-env::*copy-region-or-yank*)
+(my-env::visual-bind-key (kbd "e") #'eval-last-sexp)
+(my-env::visual-bind-key (kbd "E") #'eval-buffer)
+(my-env::global-bind-key (kbd "<backspace>") #'my-env::*delete-backward-char*)
+(my-env::visual-bind-key (kbd "C-M-\\")       'my-env::*indent-region*)
+(my-env::visual-bind-key (kbd "<C-delete>")   'my-env::*delete-region*)
+
+(my-env::global-bind-key (kbd "C-M-SPC")   #'set-mark-command)
+(my-env::global-bind-key (kbd "C-M-v") #'my-env::*view-mode-yank*)
+(my-env::global-bind-key (kbd "C-SPC") #'evil-emacs-state)
+
+(my-env::global-bind-key (kbd "C-c")   *ctrl-c-binding*)
+(my-env::global-bind-key (kbd "C-M-c")   #'my-env::*copy-region*)
+;; (global-set-key (kbd "C-c C-c") #'my-env::*copy-region*)
+(my-env::global-bind-key (kbd "C-x")   *ctrl-x-binding*)
+(my-env::global-bind-key (kbd "C-M-x")   #'my-env::*kill-region*)
+;;(global-set-key (kbd "C-x C-x") #'my-env::*kill-region*)
+(my-env::global-bind-key (kbd "C-v")   'my-env::*yank*)
+(my-env::global-bind-key (kbd "C-f")   'isearch-forward)
+(my-env::global-bind-key (kbd "C-r")   'isearch-backward)
+;;(my-env::global-bind-key (kbd "C-s")   'save-buffer)
+;;(my-env::global-bind-key (kbd "C-w")   'write-file)
+
+(my-env::visual-bind-key (kbd "j") #'my-env::*down-key*)
+(my-env::visual-bind-key (kbd "C-n") #'next-line)
+(my-env::visual-bind-key (kbd "<down>") #'next-line)
+
+(my-env::visual-bind-key (kbd "k") #'my-env::*up-key*)
+(my-env::visual-bind-key (kbd "C-p") #'previous-line)
+(my-env::visual-bind-key (kbd "<up>") #'previous-line)
+
+(my-env::visual-bind-key (kbd "h") #'my-env::*left-key*)
+(my-env::visual-bind-key (kbd "<left>") #'backward-char)
+
+(my-env::visual-bind-key (kbd "l") #'my-env::*right-key*)
+(my-env::visual-bind-key (kbd "<right>") #'forward-char)
+
+(my-env::visual-bind-key (kbd "j") #'my-env::*down-key*)
+(my-env::visual-bind-key (kbd "k") #'my-env::*up-key*)
+(my-env::visual-bind-key (kbd "h") #'my-env::*left-key*)
+(my-env::visual-bind-key (kbd "l") #'my-env::*right-key*)
+(my-env::visual-bind-key (kbd "C-h") #'my-env::*left-quick*)
+(my-env::visual-bind-key (kbd "C-l") #'my-env::*right-quick*)
+(my-env::visual-bind-key (kbd "g") #'goto-line)
+
+(global-set-key (kbd "M-w")          'my-env::*copy-region*)
+(global-set-key (kbd "C-w")          'my-env::*kill-region*)
+(global-set-key (kbd "C-M-\\")       'my-env::*indent-region*)
+(global-set-key (kbd "<C-delete>")   'my-env::*delete-region*)
+(global-set-key (kbd "<C-tab>")      'my-env::*rotate-buffer*)
+;;(global-set-key (kbd "<C-tab>")      'my-env::*tab-next*)
+;; (global-set-key (kbd "<S-tab>")      'my-env::*rotate-buffer*)
+(global-set-key (kbd "<S-tab>")      'tab-new)
+(global-set-key (kbd "<C-S-tab>" )   'my-env::*tab-next*)
+(global-set-key (kbd "<C-S-return>") 'my-env::*tab-next*)
+
+;;(global-set-key (kbd "C-x o")        'my-env::*other-window*)
+
+(global-set-key (kbd "<f3>")          'isearch-repeat-forward)
+(global-set-key (kbd "<S-f3>")        'isearch-repeat-backward)
+
+(global-set-key (kbd "<C-f3>")        'tab-close)
+(global-set-key (kbd "<M-f3>") 'kill-emacs)
+
+(global-set-key (kbd "<f4>")         'my-env::*rotate-buffer*)
+(global-set-key (kbd "<C-f4>")       'my-env::*kill-current-buffer*)
+(global-set-key (kbd "<S-f4>")       'my-env::*kill-other-buffers*)
+(global-set-key (kbd "<M-f4>")  #'kill-emacs)
+
+(global-set-key (kbd "<f5>")         'my-env::*bookmark-set*)
+;;(global-set-key (kbd "C-x <f5>")     'my-env::*bookmark-set*)
+(global-set-key (kbd "<C-f5>")       'my-env::*bookmark-set*)
+(global-set-key (kbd "<S-f5>")       'my-env::*bookmark-set*)
+(global-set-key (kbd "<M-f5>")       'my-env::*bookmark-set*)
+
+(global-set-key (kbd "<C-S-f5>")
+                #'(lambda ()
+                    (interactive)
+                    (eval-buffer) (message "Buffer evaluated.")))
+(global-set-key (kbd "<C-M-f5>")
+                #'(lambda ()
+                    (interactive)
+                    (eval-buffer) (message "Buffer evaluated.")))
+
+(global-set-key (kbd "<f6>")         'my-env::*list-bookmarks*)
+;;(global-set-key (kbd "C-x <f6>")     'my-env::*list-bookmarks*)
+(global-set-key (kbd "<C-f6>")       'my-env::*list-bookmarks*)
+(global-set-key (kbd "<S-f6>")       'my-env::*list-bookmarks*)
+(global-set-key (kbd "<M-f6>")       'my-env::*list-bookmarks*)
+
+(global-set-key (kbd "<C-S-f6>")
+                #'(lambda ()
+                    (interactive)
+                    (tab-new) (my-env::*list-bookmarks*)))
+(global-set-key (kbd "<C-M-f6>")
+                #'(lambda ()
+                    (interactive)
+                    (tab-new) (my-env::*list-bookmarks*)))
+
+(global-set-key (kbd "<f7>")         'my-env::*list-files*)
+;;(global-set-key (kbd "C-x <f7>")     'my-env::*list-files*)
+(global-set-key (kbd "<C-f7>")       'my-env::*list-files*)
+(global-set-key (kbd "<S-f7>")       'my-env::*list-files*)
+(global-set-key (kbd "<M-f7>")       'my-env::*list-files*)
+
+(global-set-key (kbd "<C-S-f7>")
+                #'(lambda ()
+                    (interactive)
+                    (tab-new) (my-env::*list-files*)))
+(global-set-key (kbd "<C-M-f7>")
+                #'(lambda ()
+                    (interactive)
+                    (tab-new) (my-env::*list-files*)))
+
+(global-set-key (kbd "<f8>")         'my-env::*list-buffers*)
+;;(global-set-key (kbd "C-x <f8>")     'my-env::*list-buffers*)
+(global-set-key (kbd "<C-f8>")       'my-env::*list-buffers*)
+(global-set-key (kbd "<S-f8>")       'my-env::*list-buffers*)
+(global-set-key (kbd "<M-f8>")       'my-env::*list-buffers*)
+
+(global-set-key (kbd "<C-S-f8>")
+                #'(lambda ()
+                    (interactive)
+                    (tab-new) (my-env::*list-buffers*)))
+(global-set-key (kbd "<C-M-f8>")
+                #'(lambda ()
+                    (interactive)
+                    (tab-new) (my-env::*list-buffers*)))
+
+(global-set-key (kbd "<f9>")         'my-env::*toggle-mode*)
+;;(global-set-key (kbd "C-x <f9>")     'my-env::*toggle-mode*)
+(global-set-key (kbd "<C-f9>")       'my-env::*toggle-mode*)
+(global-set-key (kbd "<S-f9>")       'my-env::*toggle-mode*)
+(global-set-key (kbd "<M-f9>")       'my-env::*toggle-mode*)
+
+(global-set-key (kbd "<f10>")        'my-env::*run-file-in-eshell*)
+;;(global-set-key (kbd "C-x <f10>")    'my-env::*run-file-in-eshell*)
+(global-set-key (kbd "<C-f10>")      'my-env::*run-file-in-eshell*)
+(global-set-key (kbd "<S-f10>")      'my-env::*run-file-in-eshell*)
+(global-set-key (kbd "<M-f10>")      'my-env::*run-file-in-eshell*)
+
+(global-set-key (kbd "<C-S-f10>")    'my-env::*rerun-eshell*)
+(global-set-key (kbd "<C-M-f10>")    'my-env::*rerun-eshell*)
+
+(global-set-key (kbd "<f12>")        'my-env::*jump-to-function*)
+;;(global-set-key (kbd "C-x <f12>")    'my-env::*jump-to-function*)
+(global-set-key (kbd "<C-f12>")      'my-env::*jump-to-function*)
+(global-set-key (kbd "<S-f12>")      'my-env::*jump-to-function*)
+(global-set-key (kbd "<M-f12>")      'my-env::*jump-to-function*)
+
+(global-set-key (kbd "<C-S-f12>")    'my-env::*lookup-file-or-function*)
+(global-set-key (kbd "<C-M-f12>")    'my-env::*lookup-file-or-function*)
+
+(define-key dired-mode-map (kbd "j") #'dired-next-line)
+(define-key dired-mode-map (kbd "k") #'dired-previous-line)
+
+(define-key archive-mode-map (kbd "j") #'archive-next-line)
+(define-key archive-mode-map (kbd "k") #'archive-previous-line)
+
+;; (my-env::global-bind-key (kbd "C-SPC") my-custom-map)
+(my-env::global-bind-key (kbd "M-SPC") my-custom-map)
+;;(my-env::global-bind-key (kbd "C-SPC") #'complete-symbol)
+(my-env::global-bind-key (kbd "C-h") #'my-env::*left-quick*)
+(my-env::global-bind-key (kbd "C-l") #'my-env::*right-quick*)
+(my-env::global-bind-key (kbd "<home>") #'beginning-of-line)
+(my-env::global-bind-key (kbd "<end>") #'end-of-line)
+(my-env::global-bind-key (kbd "<delete>") #'my-env::*delete-forward-char*)
+(my-env::global-bind-key (kbd "<C-S-SPC>")    'my-env::*lookup-file-or-function*)
+
+(define-key isearch-mode-map (kbd "C-f") 'isearch-repeat-forward)
+(define-key isearch-mode-map (kbd "<f3>") 'isearch-repeat-forward)
+(define-key isearch-mode-map (kbd "C-r") 'isearch-repeat-backward)
+(define-key isearch-mode-map (kbd "S-<f3>") 'isearch-repeat-backward)
+
+(my-env::global-bind-key (kbd "C-o") #'my-env::*other-window*)
+(my-env::visual-bind-key (kbd "C-<return>") #'my-env::*copy-region-or-yank*)
+(my-env::global-bind-key (kbd "C-S-<return>") #'set-mark-command)
+(my-env::global-bind-key (kbd "C-o") #'my-env::*other-window*)
+(my-env::global-bind-key (kbd "C-f") 'isearch-forward)
+(my-env::global-bind-key (kbd "C-r") 'isearch-backward)
+(my-env::global-bind-key (kbd "C-h") 'my-env::*left-quick*)
+(my-env::global-bind-key (kbd "C-l") 'my-env::*right-quick*)
+
+(define-key view-mode-map (kbd "q") #'my-env::*kill-current-buffer*)
+(define-key messages-buffer-mode-map (kbd "q") #'my-env::*kill-current-buffer*)
+(define-key dired-mode-map (kbd "q") #'my-env::*kill-current-buffer*)
+(define-key archive-mode-map (kbd "q") #'my-env::*kill-current-buffer*)
+
+(define-key view-mode-map (kbd "i")
+            #'(lambda ()
+                (interactive)
+                (view-mode-exit t)
+                )
+            )
+
+(define-key dired-mode-map ( kbd "C-S-<return>") #'mu-open-in-external-app)
+(define-key dired-mode-map ( kbd "C-<return>") #'my-env::*dired-open-marked*)
+(evil-set-initial-state 'dired-mode 'emacs)
+
+(provide 'my-keys)
