@@ -16,7 +16,7 @@
 (setq linum-format
       '(lambda (line)
         (let ((fmt
-               (let ((min-w (if (display-graphic-p) 8 5))
+               (let ((min-w (if (display-graphic-p) 10 5))
                      (w (length (number-to-string
                                  (count-lines (point-min) (point-max))))))
                  (concat "%"
