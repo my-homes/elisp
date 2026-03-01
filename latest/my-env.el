@@ -68,7 +68,7 @@
 
 ;; Enable Evil
 (require 'evil)
-(evil-mode 1)
+;;(evil-mode 1)
 
 ;;(setq evil-mode nil)
 ;;(setq evil-state nil)
@@ -223,14 +223,14 @@
   (interactive)
   (if (my-env::*mode*)
       (my-env::*forward-sexp*)
-    (my-env::*forward-char*))
+    (my-env::forward-char))
   (my-env::*redisplay*))
 
 (defun my-env::*left-key* ()
   (interactive)
   (if (my-env::*mode*)
       (my-env::*backward-sexp*)
-    (my-env::*backward-char*))
+    (my-env::backward-char))
   (my-env::*redisplay*))
 
 (defun my-env::*right-quick* ()
@@ -269,12 +269,12 @@
       (backward-char)
     (if (bobp) (my-env::*ding*) (forward-line -1))))
 
-(defun my-env::*forward-char* ()
+(defun my-env::forward-char()
   (if (eobp)
       (my-env::*ding*)
     (forward-char)))
 
-(defun my-env::*backward-char* ()
+(defun my-env::backward-char ()
   (if (bobp)
       (my-env::*ding*)
     (backward-char)))
@@ -294,10 +294,13 @@
   (cond
    ((eobp) (my-env::*ding*))
    ((my-env::*within-string* (point)) (my-env::*forward-within-string*))
-   ((looking-at "#|") (search-forward "|#" nil t))
-   ((looking-at "\\s)") (my-env::*ding*))
-   ((looking-at "\\s.")
-    (forward-char))
+   ((looking-at "(") (forward-sexp))
+   ((looking-at "\n")
+    (let ((bol? (bolp)))
+      (forward-char)
+      (when bol?
+        (while (and (bolp) (looking-at "\n"))
+          (forward-char)))))
    ((looking-at "\\s-*\\s<")
     (let ((opoint (point)))
       (forward-line)
@@ -305,6 +308,11 @@
         (setq opoint (point))
         (forward-line))
       (goto-char (max opoint (save-excursion (beginning-of-line) (point))))))
+   ((looking-at "#'" (forward-sexp)))
+   ((looking-at "#|") (search-forward "|#" nil t))
+   ((looking-at "\\s)") (my-env::*ding*))
+   ((looking-at "\\s.")
+    (forward-char))
    ((looking-at "#")
     (let ((opoint (point)))
       (forward-line)
@@ -313,12 +321,6 @@
         (forward-line))
       (goto-char (max opoint (save-excursion (beginning-of-line) (point))))))
    ((looking-at "\\s-") (while (looking-at "\\s-") (forward-char)))
-   ((looking-at "\n")
-    (let ((bol? (bolp)))
-      (forward-char)
-      (when bol?
-        (while (and (bolp) (looking-at "\n"))
-          (forward-char)))))
    (t (ignore-errors (forward-sexp)))))
 
 (defun my-env::*backward-sexp* ()
@@ -424,19 +426,34 @@
    (t (recenter -1)))
   )
 
+;; (defun my-env::*operate-on-region-or-sexp* (op)
+;;   (interactive)
+;;   (let* (
+;;          (orig-evil-state evil-state)
+;;          (m (mark))
+;;          (p (point))
+;;          )
+;;     (when (eq evil-state 'visual)
+;;       (evil-emacs-state)
+;;       (set-mark m)
+;;       (goto-char (1- p))
+;;       )
+;;     (view-mode-exit t)
+;;     (if (region-active-p)
+;;         (funcall op (mark) (point))
+;;       (funcall op
+;;                (point)
+;;                (progn (my-env::*forward-sexp*) (point))
+;;                )
+;;       )
+;;     (unless (eq orig-evil-state 'emacs)
+;;       (evil-change-state 'normal)
+;;       )
+;;     )
+;;   )
+
 (defun my-env::*operate-on-region-or-sexp* (op)
   (interactive)
-  (let* (
-         (orig-evil-state evil-state)
-         (m (mark))
-         (p (point))
-         )
-    (when (eq evil-state 'visual)
-      (evil-emacs-state)
-      (set-mark m)
-      (goto-char (1- p))
-      )
-    (view-mode-exit t)
     (if (region-active-p)
         (funcall op (mark) (point))
       (funcall op
@@ -444,10 +461,6 @@
                (progn (my-env::*forward-sexp*) (point))
                )
       )
-    (unless (eq orig-evil-state 'emacs)
-      (evil-change-state 'normal)
-      )
-    )
   )
 
 (defun my-env::*delete-forward-char* ()
@@ -1149,54 +1162,6 @@
               (define-key Buffer-menu-mode-map ( kbd "j") #'my-env::*down-key*)
               (define-key Buffer-menu-mode-map ( kbd "k") #'my-env::*up-key*)
               ))
-
-(defvar my-custom-map
-  (define-keymap
-    "G" #'grep
-    "F" #'grep-find
-    "n" #'next-error
-    "p" #'previous-error
-    "q" #'my-env::*kill-current-buffer*
-    "C-a" #'mark-whole-buffer
-    "<delete>" #'my-env::*delete-region*
-    "d" #'my-env::*delete-region*
-    "C-c" *ctrl-c-binding*
-    "c" #'my-env::*copy-region*
-    "C-x" *ctrl-x-binding*
-    "x" #'my-env::*kill-region*
-    "C-v" #'my-env::*view-mode-yank*
-    "v" #'my-env::*view-mode-yank*
-    "C-y" #'my-env::*view-mode-redo*
-    "y" #'my-env::*view-mode-redo*
-    "C-f" #'isearch-forward
-    "f" #'isearch-forward
-    "C-r" #'isearch-backward
-    "r" #'isearch-backward
-    "C-s" #'save-buffer
-    "s" #'save-buffer
-    "C-w" #'write-file
-    "w" #'write-file
-    "SPC" #'just-one-space
-    "M-SPC" #'complete-symbol
-    "m" #'set-mark-command
-     "C-h" #'my-env::*query-replace*
-    "h" #'my-env::*query-replace*
-    "C-g" #'goto-line
-    "g" #'goto-line
-    "C-z" #'my-env::*view-mode-undo*
-    "z" #'my-env::*view-mode-undo*
-    "C-e" 'eval-last-sexp
-    ":" #'eval-expression
-    "<return>" #'my-env::*copy-region-or-yank*
-    "C-<return>" #'set-mark-command
-    "C-M-e"
-             #'(lambda ()
-                 (interactive)
-                 (call-interactively #'eval-buffer)
-                 (message "#'eval-buffer")
-                 )
-    )
-  "A custom keymap for specific functions.")
 
 (defun my-env::global-bind-key (key fun)
   (define-key global-map       key fun)

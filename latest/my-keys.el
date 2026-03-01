@@ -1,3 +1,56 @@
+;;
+
+(defvar my-custom-map
+  (define-keymap
+    "G" #'grep
+    "F" #'grep-find
+    "n" #'next-error
+    "p" #'previous-error
+    "q" #'my-env::*kill-current-buffer*
+    "C-a" #'mark-whole-buffer
+    "<delete>" #'my-env::*delete-region*
+    "d" #'my-env::*delete-region*
+    "C-c" #'my-env::*copy-region*
+    "c" #'my-env::*copy-region*
+    ;;"c" #'comment-region
+    "C" #'comment-region
+    "U" #'uncomment-region
+    "u" #'my-env::*view-mode-undo*
+    "x" #'my-env::*kill-region*
+    "C-v" #'my-env::*view-mode-yank*
+    "v" #'my-env::*view-mode-yank*
+    "C-y" #'my-env::*view-mode-redo*
+    "y" #'my-env::*view-mode-redo*
+    "C-f" #'isearch-forward
+    "f" #'isearch-forward
+    "C-r" #'isearch-backward
+    "r" #'isearch-backward
+    "C-s" #'save-buffer
+    "s" #'save-buffer
+    "C-w" #'write-file
+    "w" #'write-file
+    "SPC" #'just-one-space
+    "M-SPC" #'complete-symbol
+    "m" #'set-mark-command
+     "C-h" #'my-env::*query-replace*
+    "h" #'my-env::*query-replace*
+    "C-g" #'goto-line
+    "g" #'goto-line
+    "C-z" #'my-env::*view-mode-undo*
+    "z" #'my-env::*view-mode-undo*
+    "C-e" 'eval-last-sexp
+    ":" #'eval-expression
+    "<return>" #'my-env::*copy-region-or-yank*
+    "C-<return>" #'set-mark-command
+    "C-M-e"
+             #'(lambda ()
+                 (interactive)
+                 (call-interactively #'eval-buffer)
+                 (message "#'eval-buffer")
+                 )
+    )
+  "A custom keymap for specific functions.")
+
 (require 'sh-script)
 (define-key sh-mode-map ( kbd "C-c") *ctrl-c-binding*)
 
@@ -244,5 +297,26 @@
 
 ;;(my-env::global-bind-key (kbd "C-M-SPC")   #'set-mark-command)
 (my-env::global-bind-key (kbd "C-M-SPC") my-custom-map)
+
+(defun my-env::toggle-input-method ()
+  (interactive)
+  (evil-emacs-state)
+  (call-interactively #'toggle-input-method)
+  )
+(my-env::global-bind-key (kbd "C-\\") #'my-env::toggle-input-method)
+
+(my-env::global-bind-key (kbd "C-<lwindow>") my-custom-map)
+
+(my-env::global-bind-key (kbd "<convert>") #'find-file)
+
+;;(require 'mule-cmds)
+(my-env::global-bind-key (kbd "C-<enlw>") #'my-env::toggle-input-method)
+(my-env::global-bind-key (kbd "C-<auto>") #'my-env::toggle-input-method)
+
+;;(modify-syntax-entry ?\; "<" emacs-lisp-mode-syntax-table)
+;;(modify-syntax-entry ?\n ">" emacs-lisp-mode-syntax-table)
+
+
+
 
 (provide 'my-keys)
