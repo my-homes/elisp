@@ -117,14 +117,14 @@
   (interactive)
   (view-mode-exit t)
   (call-interactively 'undo)
-  (view-mode-enter t)
+  ;;(view-mode-enter t)
   )
 
 (defun my-env::*view-mode-redo* ()
   (interactive)
   (view-mode-exit t)
   (call-interactively 'undo-redo)
-  (view-mode-enter t)
+  ;;(view-mode-enter t)
   )
 
 (defun my-env::*view-mode-yank* ()
@@ -135,7 +135,7 @@
       )
     (call-interactively 'yank)
     (when $is-view-mode
-      (view-mode-enter t)
+      ;;(view-mode-enter t)
       )
     )
   )
@@ -394,7 +394,7 @@
                )
       )
     (when $is-view-mode
-      (view-mode-enter t)
+      ;;(view-mode-enter t)
       )
     )
   )
@@ -884,11 +884,12 @@
 
 (defadvice save-buffer (before save-buffer-always activate)
   "always save buffer"
+  (view-mode-exit 1)
   (set-buffer-modified-p t)
   (set-buffer-file-coding-system 'utf-8-unix)
   (delete-trailing-whitespace)
   (when (eq (key-binding ( kbd "SPC")) 'self-insert-command)
-    (view-mode-enter t)
+    ;;(view-mode-enter t)
     )
   )
 
@@ -942,7 +943,7 @@
   (delete-other-windows)
   (my-env::*kill-current-buffer*)
   (unless (eq major-mode 'dired-mode)
-    (view-mode-enter t)
+    ;;(view-mode-enter t)
     )
   )
 
@@ -1109,7 +1110,7 @@
 
 (defadvice archive-extract (after xxx activate)
   "xxxr"
-  (view-mode-enter t)
+  ;;(view-mode-enter t)
   )
 
 ;; https://stackoverflow.com/questions/5154309/how-to-make-a-opened-buffer-read-only-without-reloading-again-with-find-file-re
@@ -1122,7 +1123,7 @@
                          (file-writable-p (buffer-file-name)))
                 (message "View mode enabled in current buffer")
                 (unless (or (string-suffix-p ".md" (buffer-file-name)) (string-suffix-p ".markdown" (buffer-file-name)))
-                  (view-mode-enter t)
+                  ;;(view-mode-enter t)
                   )
                 )
               (delete-other-windows)
@@ -1136,7 +1137,7 @@
                          (file-exists-p (buffer-file-name))
                          (file-writable-p (buffer-file-name)))
                 (message "View mode enabled in current buffer")
-                (view-mode-enter t)
+                ;;(view-mode-enter t)
                 )
               (delete-other-windows)
               ))
@@ -1197,6 +1198,8 @@ app. The app is chosen from your OS's preference."
 ;; Optional: Use gfm-mode for GitHub Flavored Markdown (GFM)
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
 
+;; yasnippetでコードのスニペットを登録して爆速でプログラミングする | joppot
+;; https://joppot.info/posts/fd05c10f-e966-4b96-81e0-f3eeb2caaa3a
 (unless (package-installed-p 'yasnippet-snippets)
   (package-install 'yasnippet-snippets))
 (setq yas-snippet-dirs
@@ -1211,5 +1214,16 @@ app. The app is chosen from your OS's preference."
               (view-mode-exit 1)
               )
           )
+
+;; "C-x y n" yas-new-snippetでスニペット用のバッファを用意します。
+;; "C-x y v" yas-visit-snippet-file
+;; "C-x y l" yas-describe-tablesは現在のメジャーモードで使えるスニペットのテーブルを表示します。
+;; "C-x y i" yas-insert-snippetはエコーエリアで対話的にスニペット挿入をサポートしてくれます。
+(global-set-key (kbd "C-x y n") #'yas-new-snippet)
+(global-set-key (kbd "C-x y v") #'yas-visit-snippet-file)
+(global-set-key (kbd "C-x y l") #'yas-describe-tables)
+(global-set-key (kbd "C-x y i") #'yas-insert-snippet)
+
+;; (define-key *ctrl-x-binding* (kbd "y") yas-minor-mode-map)
 
 (provide 'my-env)
