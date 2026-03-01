@@ -290,16 +290,15 @@
   (interactive)
   (call-interactively #'toggle-input-method)
   )
-(my-env::global-bind-key (kbd "C-\\") #'my-env::toggle-input-method)
+;;(my-env::global-bind-key (kbd "C-\\") #'toggle-input-method)
 
 (my-env::global-bind-key (kbd "C-<lwindow>") my-custom-map)
 
 (my-env::global-bind-key (kbd "<convert>") #'find-file)
 
-(my-env::global-bind-key (kbd "C-<enlw>") #'my-env::toggle-input-method)
-(my-env::global-bind-key (kbd "C-<auto>") #'my-env::toggle-input-method)
+(my-env::global-bind-key (kbd "C-<enlw>") #'toggle-input-method)
+(my-env::global-bind-key (kbd "C-<auto>") #'toggle-input-method)
 
-(my-env::global-bind-key (kbd "C-]") #'(lambda () (interactive) (describe-key (kbd "<return>"))))
 (my-env::visual-bind-key (kbd "SPC") #'my-env::*view-mode-space-key*)
 
 (provide 'my-keys)

@@ -129,9 +129,15 @@
 
 (defun my-env::*view-mode-yank* ()
   (interactive)
-  (view-mode-exit t)
-  (call-interactively 'yank)
-  (view-mode-enter t)
+  (let* (($is-view-mode view-mode))
+    (when $is-view-mode
+      (view-mode-exit t)
+      )
+    (call-interactively 'yank)
+    (when $is-view-mode
+      (view-mode-enter t)
+      )
+    )
   )
 
 (defun my-env::*mode* ()
@@ -1175,7 +1181,7 @@ app. The app is chosen from your OS's preference."
     )
   )
 
-;;(add-hook 'minibuffer-setup-hook 'your-custom-function)
+(add-hook 'minibuffer-setup-hook #'(lambda () (view-mode-exit 1)))
 
 (require 'my-keys)
 
