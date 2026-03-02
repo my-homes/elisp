@@ -769,9 +769,11 @@
 (defun create-and-select-new-frame ()
   "Create a new frame and select it."
   (interactive)
-  (let* ((new-frame (make-frame)))
-    (select-frame-set-input-focus new-frame)
-    new-frame
+  (when (display-graphic-p)
+    (let* ((new-frame (make-frame)))
+      (select-frame-set-input-focus new-frame)
+      new-frame
+      )
     )
   )
 
@@ -1021,7 +1023,8 @@
   (cond
    ((display-graphic-p)
     (setq show-paren-delay 0)
-    (setq show-paren-style 'expression)
+    ;;(setq show-paren-style 'expression)
+    (setq show-paren-style 'parenthesis)
     )
    (t
     (setq show-paren-delay 0.125)
