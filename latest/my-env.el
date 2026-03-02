@@ -907,9 +907,10 @@
   (set-buffer-modified-p t)
   (set-buffer-file-coding-system 'utf-8-unix)
   (delete-trailing-whitespace)
-  (when (eq (key-binding ( kbd "SPC")) 'self-insert-command)
-    ;;(view-mode-enter t)
-    )
+  ;; (when (eq (key-binding ( kbd "SPC")) 'self-insert-command)
+  ;;   (view-mode-enter t)
+  ;;   )
+  (view-mode-enter t)
   )
 
 ''(defun my-env::*yank* ()
