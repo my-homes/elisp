@@ -320,6 +320,7 @@
                          #'(lambda ()
                              (interactive)
                              (view-mode-exit 1)
+                             (recenter)
                              (ding)
                              (message "[!! YOU CAN EDIT NOW !!]")))
 
