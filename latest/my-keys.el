@@ -12,9 +12,8 @@
     "d" #'my-env::*delete-region*
     "C-c" #'my-env::*copy-region*
     "c" #'my-env::*copy-region*
-    ;;"c" #'comment-region
-    "C" #'comment-region
-    "U" #'uncomment-region
+    "C" #'my-env::*comment-region*
+    "U" #'my-env::*uncomment-region*
     "u" #'my-env::*view-mode-undo*
     "x" #'my-env::*kill-region*
     "C-v" #'my-env::*view-mode-yank*

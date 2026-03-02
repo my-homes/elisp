@@ -12,14 +12,20 @@
 
 (use-package names :ensure t)
 (use-package s :ensure t)
-(use-package js2-mode :ensure t)
-(require 'js2-mode)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.mts\\'" . js2-mode))
-(add-hook 'js-mode-hook (function (lambda () (setq indent-tabs-mode nil tab-width 2 js-indent-level 2))))
-(setq js2-basic-offset 2) ;; For js2-mode
+;; (use-package js2-mode :ensure t)
+;; (require 'js2-mode)
+;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
+;; (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
+;; (add-to-list 'auto-mode-alist '("\\.mts\\'" . js2-mode))
+;; (add-hook 'js-mode-hook (function (lambda () (setq indent-tabs-mode nil tab-width 2 js-indent-level 2))))
+;; (setq js2-basic-offset 2) ;; For js2-mode
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.mts\\'" . js-mode))
+;; (add-hook 'js-mode-hook (function (lambda () (setq indent-tabs-mode nil tab-width 2 js-indent-level 2))))
 
 (add-to-list 'load-path (expand-file-name "~/emacs-ffi"))
 ;;  (require 'ffi)

@@ -12,18 +12,18 @@
 ;; (global-display-line-numbers-mode t)
 
 ;; https://kei10in.hatenablog.jp/entry/20091104/1257341380
-(require 'linum)
-(setq linum-format
-      '(lambda (line)
-        (let ((fmt
-               (let ((min-w (if (display-graphic-p) 10 5))
-                     (w (length (number-to-string
-                                 (count-lines (point-min) (point-max))))))
-                 (concat "%"
-                         (number-to-string (if (< min-w w) w min-w))
-                         "d: "))))
-          (propertize (format fmt line) 'face 'linum))))
-(global-linum-mode)
+;; (require 'linum)
+;; (setq linum-format
+;;       '(lambda (line)
+;;         (let ((fmt
+;;                (let ((min-w (if (display-graphic-p) 10 5))
+;;                      (w (length (number-to-string
+;;                                  (count-lines (point-min) (point-max))))))
+;;                  (concat "%"
+;;                          (number-to-string (if (< min-w w) w min-w))
+;;                          "d: "))))
+;;           (propertize (format fmt line) 'face 'linum))))
+;; (global-linum-mode)
 
 (global-auto-revert-mode 1)
 (require 'dired)
@@ -54,19 +54,19 @@
 ;; https://qiita.com/keita44_f4/items/2adae69f05dd4a7c5f25
 ;; [company]
 ;; (straight-use-package 'company)
-(require 'company)
-;;(global-company-mode) ; 全バッファで有効にする
-(setq company-idle-delay 0.5) ; デフォルトは0.5
-;;(setq company-idle-delay 0) ; デフォルトは0.5
-(setq company-minimum-prefix-length 1) ; デフォルトは4
-(setq company-selection-wrap-around nil) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
-(add-hook 'emacs-lisp-mode-hook #'(lambda () (company-mode 1)))
-(add-hook 'lisp-interaction-mode-hook #'(lambda () (company-mode 1)))
-(add-hook 'racket-mode-hook #'(lambda () (company-mode 1)))
-(add-hook 'lisp-mode-hook #'(lambda () (company-mode 1)))
+;; (require 'company)
+;; ;;(global-company-mode) ; 全バッファで有効にする
+;; (setq company-idle-delay 0.5) ; デフォルトは0.5
+;; ;;(setq company-idle-delay 0) ; デフォルトは0.5
+;; (setq company-minimum-prefix-length 1) ; デフォルトは4
+;; (setq company-selection-wrap-around nil) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+;; (add-hook 'emacs-lisp-mode-hook #'(lambda () (company-mode 1)))
+;; (add-hook 'lisp-interaction-mode-hook #'(lambda () (company-mode 1)))
+;; (add-hook 'racket-mode-hook #'(lambda () (company-mode 1)))
+;; (add-hook 'lisp-mode-hook #'(lambda () (company-mode 1)))
 
 (setq scroll-step 1)
-;; (setq scroll-conservatively 101)
+(setq scroll-conservatively 101)
 
 (setq-default file-name-coding-system 'cp932)
 (setq-default truncate-lines t)
@@ -1143,7 +1143,7 @@
                          (file-writable-p (buffer-file-name)))
                 (message "View mode enabled in current buffer")
                 (unless (or (string-suffix-p ".md" (buffer-file-name)) (string-suffix-p ".markdown" (buffer-file-name)))
-                  ;;(view-mode-enter t)
+                  (view-mode-enter t)
                   )
                 )
               (delete-other-windows)
