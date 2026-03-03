@@ -165,4 +165,43 @@ app. The app is chosen from your OS's preference."
 (add-to-list 'load-path "~/deno-bridge/")
 (require 'deno-bridge)
 
+(defvar sml/no-confirm-load-theme t)
+(use-package smart-mode-line :ensure t)
+;;(defvar sml/no-confirm-load-theme t)
+(defvar sml/theme 'dark) ;; お好みで
+(defvar sml/shorten-directory -1) ;; directory pathはフルで表示されたいので
+(sml/setup)
+(column-number-mode t) ;; 列番号の表示
+(line-number-mode t) ;; 行番号の表示
+
+(use-package total-lines :ensure t)
+;;(require 'total-lines)
+(global-total-lines-mode t)
+(defun my-set-line-numbers ()
+  (setq-default mode-line-front-space
+		(append mode-line-front-space
+			'((:eval (format " (%d)" (- total-lines 1))))))) ;; 「" (%d)"」の部分はお好みで
+(add-hook 'after-init-hook 'my-set-line-numbers)
+
+(require 'stopwatch) ;; ~/elisp/stopwath.el
+(stopwatch-start)
+
+;; mode line を flash！！
+(setq ring-bell-function
+      (lambda ()
+	(let ((orig-fg (face-background 'mode-line)))
+	  (set-face-background 'mode-line "purple4")
+	  (run-with-idle-timer 0.1 nil
+			       (lambda (fg) (set-face-background 'mode-line fg))
+			       orig-fg))))
+
+;; save時にmode line を光らせる
+(add-hook 'after-save-hook
+	  (lambda ()
+	    (let ((orig-fg (face-background 'mode-line)))
+	      (set-face-background 'mode-line "dark green")
+	      (run-with-idle-timer 0.1 nil
+				   (lambda (fg) (set-face-background 'mode-line fg))
+				   orig-fg))))
+
 (provide 'my-init)
