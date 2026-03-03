@@ -12,18 +12,18 @@
 ;; (global-display-line-numbers-mode t)
 
 ;; https://kei10in.hatenablog.jp/entry/20091104/1257341380
-;; (require 'linum)
-;; (setq linum-format
-;;       '(lambda (line)
-;;         (let ((fmt
-;;                (let ((min-w (if (display-graphic-p) 10 5))
-;;                      (w (length (number-to-string
-;;                                  (count-lines (point-min) (point-max))))))
-;;                  (concat "%"
-;;                          (number-to-string (if (< min-w w) w min-w))
-;;                          "d: "))))
-;;           (propertize (format fmt line) 'face 'linum))))
-;; (global-linum-mode)
+(require 'linum)
+(setq linum-format
+      '(lambda (line)
+        (let ((fmt
+               (let ((min-w (if (display-graphic-p) 10 5))
+                     (w (length (number-to-string
+                                 (count-lines (point-min) (point-max))))))
+                 (concat "%"
+                         (number-to-string (if (< min-w w) w min-w))
+                         "d: "))))
+          (propertize (format fmt line) 'face 'linum))))
+(global-linum-mode)
 
 (global-auto-revert-mode 1)
 (require 'dired)
