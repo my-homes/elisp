@@ -10,7 +10,8 @@
     "C-a" #'mark-whole-buffer
     "<delete>" #'my-env::*delete-region*
     "d" #'my-env::*delete-region*
-    "C-c" #'my-env::*copy-region*
+    "C-c" *ctrl-c-binding*
+    "C-x" *ctrl-x-binding*
     "c" #'my-env::*copy-region*
     "C" #'my-env::*comment-region*
     "U" #'my-env::*uncomment-region*
@@ -330,23 +331,37 @@
     (switch-to-buffer-other-frame $new-buffer)
     ;;(message "Formatting JSON...please wait!")
     (json-pretty-print-buffer)
-    (set-buffer-modified-p nil)
+    (js-json-mode)
+    (view-mode-enter 1)
     ;;(message "Done!")
     )
   )
-(my-env::global-bind-key (kbd "<kp-0>")
-                         (function (lambda ()
-                                     (interactive)
-                                     (cond
-                                      ((string-suffix-p ".json" (buffer-name))
-                                       (call-interactively #'my-env::preview-json-in-buffer)
-                                       )
-                                      ((or (string-suffix-p ".md" (buffer-name)) (string-suffix-p ".markdown" (buffer-name)))
-                                       (call-interactively #'markdown-preview)
-                                       )
-                                      )
-                                     )
-                                   )
-                         )
+
+(defun my-env::kb-0 (prefix-arg)
+  (interactive "P")
+  (cond
+   ((string-suffix-p ".json" (buffer-name))
+    (call-interactively #'my-env::preview-json-in-buffer)
+    )
+   ((or (string-suffix-p ".md" (buffer-name)) (string-suffix-p ".markdown" (buffer-name)))
+    (call-interactively #'markdown-preview)
+    )
+   (t
+    (my-env::*run-file-in-eshell* prefix-arg)
+    )
+   )
+  )
+
+(my-env::global-bind-key (kbd "<kp-0>") #'my-env::kb-0)
+
+(global-unset-key (kbd "C-x"))
+(bind-key* (kbd "C-c") #'my-env::*copy-region*)
+(global-unset-key (kbd "C-x"))
+(bind-key* (kbd "C-x") #'my-env::*kill-region*)
+
+(global-unset-key (kbd "C-s"))
+(bind-key* (kbd "C-s") #'save-buffer)
+(global-unset-key (kbd "C-w"))
+(bind-key* (kbd "C-w") #'write-file)
 
 (provide 'my-keys)
