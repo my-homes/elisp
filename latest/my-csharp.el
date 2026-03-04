@@ -2,12 +2,10 @@
 ;;; https://kazuhira-r.hatenablog.com/entry/2021/04/03/211420
 
 ;; lsp-mode
-(xprint :raw "(1)")
 (add-to-list 'load-path (expand-file-name "~/spinner-1.7.4"))
 ;; (use-package spinner :ensure t)
 (require 'spinner)
 (require 'package)
-(xprint :raw 'before)
 (add-to-list 'load-path (expand-file-name "~/lsp-mode"))
 (use-package ht :ensure t)
 (use-package lv :ensure t)
@@ -15,10 +13,8 @@
 ;; (unless (package-installed-p 'lsp-mode)
 ;;   (package-install 'lsp-mode)
 ;;   )
-(xprint :raw 'after)
 (use-package lsp-mode :ensure t)
 (require 'lsp-mode)
-(xprint :raw "(1.1)")
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
 (setq lsp-completion-provider :capf)
@@ -27,16 +23,13 @@
 ;; (unless (package-installed-p 'lsp-ui)
 ;;   (package-install 'lsp-ui)
 ;;   )
-(xprint :raw "(1.2)")
 (add-to-list 'load-path (expand-file-name "~/lsp-ui"))
 (require 'lsp-mode)
-(require 'lsp-ui)
 (setq lsp-ui-imenu-enable t)
 (setq lsp-headerline-breadcrumb-enable t)
-(xprint :raw "(1.3)")
+(require 'lsp-ui)
 
 ;; company
-(xprint :raw "(2)")
 (use-package company :ensure t)
 (require 'company)
 (global-company-mode t)
@@ -47,7 +40,6 @@
 (define-key company-active-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
 (define-key company-active-map (kbd "C-s") 'company-filter-candidates)
-(xprint :raw "(3)")
 
 (require 'lsp-mode)
 (add-hook 'csharp-mode-hook #'lsp)
