@@ -209,10 +209,10 @@ app. The app is chosen from your OS's preference."
   (require 'setup))
 (setup-initialize)
 
-(setup typescript-ts-mode
-  (:file-match "\\.ts\\'")
-  (:hook dprint-on-save-mode
-         eglot-ensure))
+;; (setup typescript-ts-mode
+;;   (:file-match "\\.ts\\'")
+;;   (:hook dprint-on-save-mode
+;;          eglot-ensure))
 
 (require 'my-ts)
 
