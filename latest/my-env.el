@@ -1242,10 +1242,10 @@ app. The app is chosen from your OS's preference."
 ;; "C-x y v" yas-visit-snippet-file
 ;; "C-x y l" yas-describe-tablesは現在のメジャーモードで使えるスニペットのテーブルを表示します。
 ;; "C-x y i" yas-insert-snippetはエコーエリアで対話的にスニペット挿入をサポートしてくれます。
-(global-set-key (kbd "C-x y n") #'yas-new-snippet)
-(global-set-key (kbd "C-x y v") #'yas-visit-snippet-file)
-(global-set-key (kbd "C-x y l") #'yas-describe-tables)
-(global-set-key (kbd "C-x y i") #'yas-insert-snippet)
+(global-set-key (kbd "C-SPC C-x y n") #'yas-new-snippet)
+(global-set-key (kbd "C-SPC C-x y v") #'yas-visit-snippet-file)
+(global-set-key (kbd "C-SPC C-x y l") #'yas-describe-tables)
+(global-set-key (kbd "C-SPC C-x y i") #'yas-insert-snippet)
 
 ;; (define-key *ctrl-x-binding* (kbd "y") yas-minor-mode-map)
 

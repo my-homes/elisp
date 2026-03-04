@@ -4,4 +4,3 @@ function add2(a: number, b: number) {
 
 var answer = add2(11, 22);
 console.log(answer);
-console.log(xxx);

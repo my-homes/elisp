@@ -204,6 +204,16 @@ app. The app is chosen from your OS's preference."
 				   (lambda (fg) (set-face-background 'mode-line fg))
 				   orig-fg))))
 
+(add-to-list 'load-path (expand-file-name "~/elisp/setup"))
+(eval-when-compile
+  (require 'setup))
+(setup-initialize)
+
+(setup typescript-ts-mode
+  (:file-match "\\.ts\\'")
+  (:hook dprint-on-save-mode
+         eglot-ensure))
+
 (require 'my-ts)
 
 (provide 'my-init)
