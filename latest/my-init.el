@@ -215,5 +215,6 @@ app. The app is chosen from your OS's preference."
 ;;          eglot-ensure))
 
 (require 'my-ts)
+(require 'my-janet)
 
 (provide 'my-init)
