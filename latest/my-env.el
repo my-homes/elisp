@@ -119,7 +119,7 @@
   (interactive)
   (view-mode-exit t)
   (call-interactively 'undo)
-  ;;(view-mode-enter t)
+  (view-mode-enter t)
   )
 
 (defun my-env::*view-mode-redo* ()

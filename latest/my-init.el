@@ -19,9 +19,9 @@
    (use-package js2-mode :ensure t)
    (require 'js2-mode)
    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-   (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
+   ;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
    (add-to-list 'auto-mode-alist '("\\.mjs\\'" . js2-mode))
-   (add-to-list 'auto-mode-alist '("\\.mts\\'" . js2-mode))
+   ;;(add-to-list 'auto-mode-alist '("\\.mts\\'" . js2-mode))
    (add-hook 'js-mode-hook
              (function
               (lambda ()
@@ -203,5 +203,7 @@ app. The app is chosen from your OS's preference."
 	      (run-with-idle-timer 0.1 nil
 				   (lambda (fg) (set-face-background 'mode-line fg))
 				   orig-fg))))
+
+(require 'my-ts)
 
 (provide 'my-init)
