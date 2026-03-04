@@ -104,7 +104,7 @@
 (my-env::global-bind-key (kbd "C-x")   *ctrl-x-binding*)
 (my-env::global-bind-key (kbd "C-M-x")   #'my-env::*kill-region*)
 ;;(global-set-key (kbd "C-x C-x") #'my-env::*kill-region*)
-(my-env::global-bind-key (kbd "C-v")   'yank)
+(my-env::global-bind-key (kbd "C-v")   'my-env::*view-mode-yank*)
 (my-env::global-bind-key (kbd "C-f")   'isearch-forward)
 (my-env::global-bind-key (kbd "C-r")   'isearch-backward)
 ;;(my-env::global-bind-key (kbd "C-s")   'save-buffer)
