@@ -780,7 +780,16 @@
             )
           )
         )
-      (setq cmd (format "cd '%s' && './%s'" dir fname))
+      (if (not (string-suffix-p ".cs" fname))
+          (setq cmd (format "cd '%s' && './%s'" dir fname))
+        (setq cmd
+              (format
+               "bash -c \"cd '%s' && wingen.exe '%s' && './.r.%s'\""
+               dir
+               fname
+               (replace-regexp-in-string "[.]main[.]cs$" "" fname))
+              )
+        )
       (while cmd-args
         (setq cmd (format "%s '%s'" cmd (pop cmd-args)))
         )
