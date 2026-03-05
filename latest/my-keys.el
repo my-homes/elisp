@@ -293,7 +293,7 @@
   )
 ;;(my-env::global-bind-key (kbd "C-\\") #'toggle-input-method)
 
-(my-env::global-bind-key (kbd "C-<lwindow>") my-custom-map)
+(my-env::global-bind-key (kbd "C-<lwindow>") #'delete-other-windows)
 
 (my-env::global-bind-key (kbd "<convert>") #'find-file)
 

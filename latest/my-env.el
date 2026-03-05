@@ -717,6 +717,45 @@
     )
   )
 
+;; (defun my-env::*run-file-in-eshell* (prefix-arg)
+;;   (interactive "P")
+;;   (if (null buffer-file-name) (*ding*)
+;;     (let* (
+;;            (win (selected-window))
+;;            (dir (file-name-directory buffer-file-name))
+;;            (fname (file-name-nondirectory buffer-file-name))
+;;            (fext (file-name-extension fname))
+;;            (end-of-args nil)
+;;            cmd-arg
+;;            (cmd-args (list fname))
+;;            cmd-file
+;;            cmd
+;;            )
+;;       (when prefix-arg
+;;         (while (not end-of-args)
+;;           (setq cmd-arg (read-string (format "Argument for '%s': " fname)))
+;;           (if (string-empty-p cmd-arg)
+;;               (setq end-of-args t)
+;;             (add-to-list 'cmd-args cmd-arg t)
+;;             )
+;;           )
+;;         )
+;;       (setq cmd-file
+;;             (my-env::*cmd-line-to-shell-text*
+;;              cmd-args
+;;              )
+;;             )
+;;       (setq cmd (format "xrun-json '%s'" cmd-file))
+;;       (ignore-errors
+;;         (set-file-modes (buffer-file-name) (string-to-number "775" 8))
+;;         )
+;;       (delete-other-windows)
+;;       (my-env::*run-command-in-eshell* dir cmd)
+;;       (select-window win)
+;;       )
+;;     )
+;;   )
+
 (defun my-env::*run-file-in-eshell* (prefix-arg)
   (interactive "P")
   (if (null buffer-file-name) (*ding*)
@@ -725,45 +764,32 @@
            (dir (file-name-directory buffer-file-name))
            (fname (file-name-nondirectory buffer-file-name))
            (fext (file-name-extension fname))
-           ;; (cmd-args (read-string (format "Arguments for '%s': " fname)))
            (end-of-args nil)
            cmd-arg
-           (cmd-args (list fname))
+           ;;(cmd-args (list fname))
+           cmd-args
            cmd-file
-           ;; (cmd-file
-           ;;  (my-env::*cmd-line-to-shell-text*
-           ;;   ;; (list "bash" "-c" fname))
-           ;;   (list fname))
-           ;;  )
-           ;; (cmd (format "xrun-json '%s' %s" cmd-file cmd-args))
            cmd
            )
-      ;; (setq cmd (format "cd \"%s\" && xrun './%s %s'" dir fname cmd-args))
-      ;;(setq cmd (format "xrun './%s %s'" fname cmd-args))
       (when prefix-arg
         (while (not end-of-args)
           (setq cmd-arg (read-string (format "Argument for '%s': " fname)))
           (if (string-empty-p cmd-arg)
               (setq end-of-args t)
-            ;; (add-to-list 'cmd-args (format "\"%s\"" cmd-arg) t)
             (add-to-list 'cmd-args cmd-arg t)
             )
           )
         )
-      (setq cmd-file
-            (my-env::*cmd-line-to-shell-text*
-             ;; (list "bash" "-c" fname))
-             ;; (list fname)
-             cmd-args
-             )
-            )
-      (setq cmd (format "xrun-json '%s'" cmd-file))
+      (setq cmd (format "cd '%s' && './%s'" dir fname))
+      (while cmd-args
+        (setq cmd (format "%s '%s'" cmd (pop cmd-args)))
+        )
       (ignore-errors
         (set-file-modes (buffer-file-name) (string-to-number "775" 8))
         )
       (delete-other-windows)
       (my-env::*run-command-in-eshell* dir cmd)
-      (select-window win)
+      ;;(select-window win)
       )
     )
   )
