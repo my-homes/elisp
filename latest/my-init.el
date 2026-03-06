@@ -13,7 +13,8 @@
 (use-package names :ensure t)
 (use-package s :ensure t)
 (setq user-js2-mode t)
-(setq *js-indent-width* 4)
+;;(setq *js-indent-width* 4)
+(setq *js-indent-width* 2)
 (cond
  ( user-js2-mode
    (use-package js2-mode :ensure t)
