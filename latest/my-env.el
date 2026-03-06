@@ -55,13 +55,12 @@
 
 ;; https://qiita.com/keita44_f4/items/2adae69f05dd4a7c5f25
 ;; [company]
-;; (straight-use-package 'company)
-;; (require 'company)
-;; ;;(global-company-mode) ; 全バッファで有効にする
-;; (setq company-idle-delay 0.5) ; デフォルトは0.5
-;; ;;(setq company-idle-delay 0) ; デフォルトは0.5
-;; (setq company-minimum-prefix-length 1) ; デフォルトは4
-;; (setq company-selection-wrap-around nil) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+(require 'company)
+(global-company-mode) ; 全バッファで有効にする
+(setq company-idle-delay 0.5) ; デフォルトは0.5
+;;(setq company-idle-delay 0) ; デフォルトは0.5
+(setq company-minimum-prefix-length 1) ; デフォルトは4
+(setq company-selection-wrap-around nil) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
 ;; (add-hook 'emacs-lisp-mode-hook #'(lambda () (company-mode 1)))
 ;; (add-hook 'lisp-interaction-mode-hook #'(lambda () (company-mode 1)))
 ;; (add-hook 'racket-mode-hook #'(lambda () (company-mode 1)))
