@@ -217,6 +217,6 @@ app. The app is chosen from your OS's preference."
 
 (require 'my-ts)
 (require 'my-janet)
-(require 'my-csharp)
+;;(require 'my-csharp)
 
 (provide 'my-init)
