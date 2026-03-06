@@ -758,7 +758,7 @@
 
 (defun my-env::*run-file-in-eshell* (prefix-arg)
   (interactive "P")
-  (if (null buffer-file-name) (*ding*)
+  (if (null buffer-file-name) (my-env::*ding*)
     (let* (
            (win (selected-window))
            (dir (file-name-directory buffer-file-name))
@@ -770,6 +770,7 @@
            cmd-args
            cmd-file
            cmd
+           run-cmd
            )
       (when prefix-arg
         (while (not end-of-args)
@@ -780,19 +781,28 @@
             )
           )
         )
-      (if (not (string-suffix-p ".cs" fname))
-          (setq cmd (format "cd '%s' && './%s'" dir fname))
+      (cond
+       ((not (string-suffix-p ".cs" fname))
+        (setq cmd (format "cd '%s' && './%s'" dir fname))
+        (while cmd-args
+          (setq cmd (format "%s '%s'" cmd (pop cmd-args)))
+          )
+        )
+       (t
+        (setq run-cmd (format "'./.r.%s'" (replace-regexp-in-string "[.]main[.]cs$" "" fname)))
+        (while cmd-args
+          (setq run-cmd (format "%s '%s'" run-cmd (pop cmd-args)))
+          )
         (setq cmd
               (format
-               "bash -c \"cd '%s' && wingen.exe '%s' && './.r.%s'\""
+               "bash -c \"cd '%s' && wingen.exe '%s' && %s\""
                dir
                fname
-               (replace-regexp-in-string "[.]main[.]cs$" "" fname))
+               run-cmd
+               )
               )
         )
-      (while cmd-args
-        (setq cmd (format "%s '%s'" cmd (pop cmd-args)))
-        )
+       )
       (ignore-errors
         (set-file-modes (buffer-file-name) (string-to-number "775" 8))
         )
@@ -1006,7 +1016,7 @@
 
 ;;; Customization
 
-(defvar my-env::ding-dings nil)
+(defvar my-env::ding-dings t)
 
 (setq bookmark-bmenu-file-column 45)
 
