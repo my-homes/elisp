@@ -251,7 +251,7 @@
   (cond
    ((eobp) (my-env::*ding*))
    ((my-env::*within-string* (point)) (my-env::*forward-within-string*))
-   ;;((looking-at "#'" (forward-sexp)))
+   ((looking-at "#!") (forward-line) (beginning-of-line))
    ((looking-at "#|") (search-forward "|#" nil t))
    ((looking-at "(") (forward-sexp))
    ((looking-at "\n")
