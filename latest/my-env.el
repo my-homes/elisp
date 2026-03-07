@@ -654,22 +654,31 @@
   (switch-to-buffer "*Buffer List*")
   )
 
+;; (defun my-env::*rerun-eshell* (&optional other-window)
+;;   (interactive)
+;;   (condition-case nil
+;;       (kill-buffer "*eshell*")
+;;     (error nil))
+;;   (let* ((cwd default-directory))
+;;     (save-window-excursion
+;;       (switch-to-buffer "*eshell*")
+;;       (cd cwd)
+;;       (eshell)
+;;       )
+;;     (if other-window
+;;         (switch-to-buffer-other-window "*eshell*")
+;;       (switch-to-buffer "*eshell*")
+;;       )
+;;     )
+;;   )
+
 (defun my-env::*rerun-eshell* (&optional other-window)
   (interactive)
   (condition-case nil
       (kill-buffer "*eshell*")
     (error nil))
-  (let* ((cwd default-directory))
-    (save-window-excursion
-      (switch-to-buffer "*eshell*")
-      (cd cwd)
-      (eshell)
-      )
-    (if other-window
-        (switch-to-buffer-other-window "*eshell*")
-      (switch-to-buffer "*eshell*")
-      )
-    )
+  (delete-other-windows)
+  (eshell)
   )
 
 (defun my-env::*run-command-in-eshell* (dir cmd)
