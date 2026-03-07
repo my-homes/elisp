@@ -45,6 +45,8 @@
 (use-package magit :ensure t)
 
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
+(add-to-list 'auto-mode-alist '("\\.scm\\'" . racket-mode))
+(add-to-list 'auto-mode-alist '("\\.lisp1\\'" . racket-mode))
 (modify-syntax-entry ?# "<" racket-mode-syntax-table)
 (modify-syntax-entry ?\n ">" racket-mode-syntax-table)
 
